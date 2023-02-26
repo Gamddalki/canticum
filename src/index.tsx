@@ -58,7 +58,8 @@ table {
   box-sizing: border-box;
 }
 body{
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "NanumSquare", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 300;
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor};

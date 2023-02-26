@@ -10,5 +10,6 @@ declare module "styled-components" {
     boardColor: string;
     cardColor: string;
     headerColor: string;
+    headertextColor: string;
   }
 }

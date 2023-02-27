@@ -1,16 +1,19 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../img/logo.gif";
+import LangToggleBtn from "./LangToggleBtn";
+import { useTranslation } from "react-i18next";
 
 const Col = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 2000;
+  z-index: 1500;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: ${(props) => props.theme.headerColor};
   color: ${(props) => props.theme.headertextColor};
   font-weight: 500;
@@ -73,6 +76,7 @@ const Item = styled.li`
 `;
 
 function Header() {
+  const { t, i18n } = useTranslation("header");
   return (
     <Col>
       <a href="/">
@@ -81,47 +85,49 @@ function Header() {
       <Nav>
         <Ul>
           <Li>
-            칸티쿰합창단
+            {t("canticum")}
             <Items>
               <Link to="/about">
-                <Item>합창단소개</Item>
+                <Item>{t("about")}</Item>
               </Link>
               <Link to="/about/members">
-                <Item>단원소개</Item>
+                <Item>{t("members")}</Item>
               </Link>
             </Items>
           </Li>
           <Li>
-            소식
+            {t("news")}
             <Items>
               <Link to="/newsletter/concert">
-                <Item>공연안내</Item>
+                <Item>{t("concert")}</Item>
               </Link>
               <Link to="/newsletter">
-                <Item>소식지</Item>
+                <Item>{t("newsletter")}</Item>
               </Link>
             </Items>
           </Li>
           <Link to="/recruitment">
-            <Li>단원모집</Li>
+            <Li>{t("recruit")}</Li>
           </Link>
           <Link to="/media">
-            <Li>자료실</Li>
+            <Li>{t("media")}</Li>
           </Link>
           <Li>
-            후원
+            {t("donation")}
             <Items>
               <Link to="/sponsor">
-                <Item>후원안내</Item>
+                <Item>{t("information")}</Item>
               </Link>
               <Link to="/sponsor/support">
-                <Item>후원신청</Item>
+                <Item>{t("support")}</Item>
               </Link>
             </Items>
           </Li>
         </Ul>
       </Nav>
-      <div></div>
+      <div>
+        <LangToggleBtn />
+      </div>
     </Col>
   );
 }

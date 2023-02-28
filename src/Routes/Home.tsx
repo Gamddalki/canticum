@@ -45,19 +45,23 @@ const IframeContainer = ({
   src1,
   src2,
   src3,
+  src4,
 }: {
   src1: string;
   src2: string;
   src3: string;
+  src4: string;
 }) => {
   return (
     <IframeBox>
       <Iframe src={src1} />
       <Iframe src={src2} />
       <Iframe src={src3} />
-      <Iframe src={src3} />
+      <Iframe src={src4} />
     </IframeBox>
   );
+};
+
 function Home() {
   return (
     <Background>
@@ -71,6 +75,7 @@ function Home() {
         src1="https://www.youtube.com/embed/WUsjSMXHJXE?autoplay=1&mute=1&loop=1;"
         src2="https://www.youtube.com/embed/ZUnHFFSTPOY?autoplay=1&mute=1&loop=1;"
         src3="https://www.youtube.com/embed/PSPzam3fIrk?autoplay=1&mute=1&loop=1;"
+        src4="https://www.youtube.com/embed/ri8Y1nrkiqk?autoplay=1&mute=1&loop=1;"
       />
     </>
   );

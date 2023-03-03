@@ -61,6 +61,40 @@ const ImgBox = styled.div`
   }
 `;
 
+/* bg img Array */
+const bgArr = [
+  { img: bg1, key: 1 },
+  { img: bg2, key: 2 },
+  { img: bg3, key: 3 },
+  { img: bg4, key: 4 },
+];
+
+/* useInterval Hook */
+interface IUseInterval {
+  (callback: () => void, interval: number): void;
+}
+
+const useInterval: IUseInterval = (callback, interval) => {
+  const savedCallback = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      if (savedCallback.current) {
+        savedCallback.current();
+      }
+    }
+    if (interval !== null && interval !== 10000000) {
+      let id = setInterval(tick, interval);
+      return () => clearInterval(id);
+    }
+  }, [interval]);
+};
+
+/* youtube iframes */
 const IframeBox = styled.div`
   width: 100%;
   height: 14vw;
@@ -110,6 +144,67 @@ const IframeContainer = ({
 };
 
 function Home() {
+  const [slideIndex, setSlideIndex] = useState(1);
+  const [slideInterval, setSlideInterval] = useState(6000); // slideInterval 6 secs
+
+  const slideRef = useRef<HTMLDivElement>(null);
+
+  const BG_NUM = bgArr.length;
+  const beforeSlide = bgArr[BG_NUM - 1];
+  const afterSlide = bgArr[0];
+
+  let slideArr = [beforeSlide, ...bgArr, afterSlide]; // create slide array (last, origin(first,...,last) ,first) for infinite slide show
+  const SLIDE_NUM = slideArr.length;
+
+  useInterval(() => setSlideIndex((prev) => prev + 1), slideInterval); // auto slide show with slideInterval
+
+  /* InfiniteSlideHandler attachs last/first imgs with origin last/first imgs to make slide seem infinite */
+  const InfiniteSlideHandler = (flytoIndex: number) => {
+    setTimeout(() => {
+      if (slideRef.current) {
+        slideRef.current.style.transition = "";
+      }
+      setSlideIndex(flytoIndex);
+      setTimeout(() => {
+        if (slideRef.current) {
+          slideRef.current.style.transition = "all 500ms ease-in-out";
+        }
+      }, 100);
+    }, 500);
+  };
+
+  if (slideIndex === SLIDE_NUM - 1) {
+    // if first img (slide array's last item) -> go to origin first img
+    InfiniteSlideHandler(1);
+  }
+
+  if (slideIndex === 0) {
+    // if last img (slide array's first item) -> go to origin last img
+    InfiniteSlideHandler(BG_NUM);
+  }
+
+  const intervalHandler = () => {
+    // when InfiniteSlideHandler works for first img (slide array's last item), control slideInterval to show transition animation normally
+    if (slideIndex === SLIDE_NUM - 1) {
+      setSlideInterval(500);
+      console.log(slideInterval);
+    } else {
+      setSlideInterval(6000);
+      console.log(slideInterval);
+    }
+  };
+
+  /* SlideHandler for buttons */
+  const slideHandler = (direction: number) => {
+    setSlideIndex((prev) => prev + direction);
+  };
+
+  /* stopAutoSlide when controlling slide with buttons */
+  const stopAutoSlide = () => {
+    setSlideInterval(10000000);
+    console.log(slideInterval);
+  };
+
   return (
     <>
       <Background>

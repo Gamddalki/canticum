@@ -2,8 +2,55 @@ import styled from "styled-components";
 import bg1 from "../img/1.jpg";
 import bg2 from "../img/2.jpg";
 import bg3 from "../img/3.jpg";
+import bg4 from "../img/4.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef, useState } from "react";
 
 const Background = styled.div`
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  .Left {
+    top: 50%;
+    left: 3%;
+    transform: translate(-50%, -50%);
+    color: rgba(235, 235, 235, 0.3);
+    &:hover {
+      color: rgba(235, 235, 235, 0.5);
+    }
+  }
+  .Right {
+    top: 50%;
+    left: 97%;
+    transform: translate(-50%, -50%);
+    color: rgba(235, 235, 235, 0.3);
+    &:hover {
+      color: rgba(235, 235, 235, 0.5);
+    }
+  }
+`;
+
+/* bg img slider */
+const SlideBtn = styled.div`
+  z-index: 100;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImgContainer = styled.div`
+  display: flex;
+  overflow: hidden;
+`;
+
+const ImgBox = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -64,11 +111,39 @@ const IframeContainer = ({
 
 function Home() {
   return (
-    <Background>
-      <img src={bg2} />
-    </Background>
-            style={{ color: "rgba(235,235,235,0.3)" }}
-          />
+    <>
+      <Background>
+        <SlideBtn
+          className="Left"
+          onMouseEnter={stopAutoSlide}
+          onMouseLeave={intervalHandler}
+          onClick={() => slideHandler(-1)}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} size="4x" />
+        </SlideBtn>
+        <ImgContainer
+          ref={slideRef}
+          style={{
+            width: `${100 * SLIDE_NUM}vw`,
+            transition: "all 500ms ease-in-out",
+            transform: `translateX(${
+              -1 * ((100 / slideArr.length) * slideIndex)
+            }%)`,
+          }}
+        >
+          {slideArr.map((item, index) => (
+            <ImgBox key={index}>
+              <img src={item.img} />
+            </ImgBox>
+          ))}
+        </ImgContainer>
+        <SlideBtn
+          className="Right"
+          onMouseEnter={stopAutoSlide}
+          onMouseLeave={intervalHandler}
+          onClick={() => slideHandler(+1)}
+        >
+          <FontAwesomeIcon icon={faChevronRight} size="4x" />
         </SlideBtn>
       </Background>
       <IframeContainer

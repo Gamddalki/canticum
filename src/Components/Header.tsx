@@ -39,7 +39,7 @@ const Ul = styled.ul`
 
 const Li = styled.li`
   position: relative;
-  padding: 20px 35px;
+  padding: 21px 35px;
   &:hover {
     color: ${(props) => props.theme.accentColor};
     border-top: 2px solid rgba(0, 0, 0, 0);
@@ -53,7 +53,7 @@ const Li = styled.li`
 const Items = styled.ul`
   display: none;
   position: absolute;
-  top: 63px;
+  top: 64px;
   left: 50%;
   padding: 0;
   background: ${(props) => props.theme.headerColor};

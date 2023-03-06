@@ -90,9 +90,6 @@ function Header() {
               <Link to="/about">
                 <Item>{t("about")}</Item>
               </Link>
-              <Link to="/about/members">
-                <Item>{t("members")}</Item>
-              </Link>
             </Items>
           </Li>
           <Li>

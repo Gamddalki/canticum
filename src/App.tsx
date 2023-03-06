@@ -5,6 +5,7 @@ import Members from "./Routes/about/Members";
 import About from "./Routes/about/About";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Recruitment from "./Routes/Recruitment";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/about/members" element={<Members />}></Route>
         <Route path="/about/headquarters" element={<Headquarters />}></Route>
+        <Route path="/recruitment" element={<Recruitment />}></Route>
       </Routes>
       <Footer />
     </Router>

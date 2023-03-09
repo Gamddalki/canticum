@@ -7,19 +7,16 @@ type BodyWrapperProps = {
   children: React.ReactChild;
 };
 
-const HeaderBg = styled.div`
-  width: 100%;
-  height: 65px;
-  background-color: black;
-`;
-
 const MainContents = styled.div`
   max-width: 952px;
   margin: 0 auto;
   padding: 182px 0px;
+  div {
+    margin: 0 auto;
+  }
 `;
 
-const PageTitle = styled.h3`
+const PageTitle = styled.div`
   display: block;
   em {
     font-weight: bold;
@@ -49,7 +46,6 @@ function BodyWrapper({
 }: BodyWrapperProps) {
   return (
     <>
-      <HeaderBg />
       <MainContents>
         <PageTitle>
           <em>{pageTitle}</em>

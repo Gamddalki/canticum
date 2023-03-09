@@ -9,6 +9,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
+import { PC, Mobile } from "../Components/Responsive";
 
 const Background = styled.div`
   width: 100%;
@@ -36,6 +37,11 @@ const Background = styled.div`
   }
 `;
 
+const MoBackground = styled.div`
+  width: 100vw;
+  display: block;
+`;
+
 /* bg img slider */
 const SlideBtn = styled.div`
   z-index: 100;
@@ -48,17 +54,22 @@ const SlideBtn = styled.div`
 const ImgContainer = styled.div`
   display: flex;
   overflow: hidden;
+  height: 100vh;
 `;
 
 const ImgBox = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+`;
+
+const MoImgBox = styled(ImgBox)`
+  height: 59vw;
 `;
 
 /* bg img Array */
@@ -207,40 +218,51 @@ function Home() {
 
   return (
     <>
-      <Background>
-        <SlideBtn
-          className="Left"
-          onMouseEnter={stopAutoSlide}
-          onMouseLeave={intervalHandler}
-          onClick={() => slideHandler(-1)}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} size="4x" />
-        </SlideBtn>
-        <ImgContainer
-          ref={slideRef}
-          style={{
-            width: `${100 * SLIDE_NUM}vw`,
-            transition: "all 500ms ease-in-out",
-            transform: `translateX(${
-              -1 * ((100 / slideArr.length) * slideIndex)
-            }%)`,
-          }}
-        >
-          {slideArr.map((item, index) => (
-            <ImgBox key={index}>
+      <PC>
+        <Background>
+          <SlideBtn
+            className="Left"
+            onMouseEnter={stopAutoSlide}
+            onMouseLeave={intervalHandler}
+            onClick={() => slideHandler(-1)}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} size="4x" />
+          </SlideBtn>
+          <ImgContainer
+            ref={slideRef}
+            style={{
+              width: `${100 * SLIDE_NUM}vw`,
+              transition: "all 500ms ease-in-out",
+              transform: `translateX(${
+                -1 * ((100 / slideArr.length) * slideIndex)
+              }%)`,
+            }}
+          >
+            {slideArr.map((item, index) => (
+              <ImgBox key={index}>
+                <img src={item.img} />
+              </ImgBox>
+            ))}
+          </ImgContainer>
+          <SlideBtn
+            className="Right"
+            onMouseEnter={stopAutoSlide}
+            onMouseLeave={intervalHandler}
+            onClick={() => slideHandler(+1)}
+          >
+            <FontAwesomeIcon icon={faChevronRight} size="4x" />
+          </SlideBtn>
+        </Background>
+      </PC>
+      <Mobile>
+        <MoBackground>
+          {bgArr.map((item, index) => (
+            <MoImgBox key={index}>
               <img src={item.img} />
-            </ImgBox>
+            </MoImgBox>
           ))}
-        </ImgContainer>
-        <SlideBtn
-          className="Right"
-          onMouseEnter={stopAutoSlide}
-          onMouseLeave={intervalHandler}
-          onClick={() => slideHandler(+1)}
-        >
-          <FontAwesomeIcon icon={faChevronRight} size="4x" />
-        </SlideBtn>
-      </Background>
+        </MoBackground>
+      </Mobile>
       <IframeContainer
         src1="https://www.youtube.com/embed/WUsjSMXHJXE?autoplay=1&mute=1&loop=1;"
         src2="https://www.youtube.com/embed/ZUnHFFSTPOY?autoplay=1&mute=1&loop=1;"

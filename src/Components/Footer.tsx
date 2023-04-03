@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -33,6 +34,17 @@ const Col = styled.div`
   }
 `;
 
+const Admin = styled.button`
+  width: 10px;
+  height: 10px;
+  z-index: 1300;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+`;
+
 function Footer() {
   return (
     <Col>
@@ -51,6 +63,9 @@ function Footer() {
         </a>
       </div>
       <span>&copy; Canticum Choir. All Rights Reserved.</span>
+      <Link to="/admin">
+        <Admin />
+      </Link>
     </Col>
   );
 }

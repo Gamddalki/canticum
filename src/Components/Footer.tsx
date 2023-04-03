@@ -63,7 +63,7 @@ function Footer() {
         </a>
       </div>
       <span>&copy; Canticum Choir. All Rights Reserved.</span>
-      <Link to="/admin">
+      <Link to="/admin/background">
         <Admin />
       </Link>
     </Col>

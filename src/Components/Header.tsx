@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../img/logo.gif";
+import logo from "../img/logo.png";
 import LangToggleBtn from "./LangToggleBtn";
 import { useTranslation } from "react-i18next";
 
@@ -21,6 +21,7 @@ const Col = styled.div`
   height: 65px;
   img {
     margin-left: 20px;
+    height: 60px;
   }
 `;
 

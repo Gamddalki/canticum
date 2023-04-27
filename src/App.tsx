@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Headquarters from "./Routes/about/Headquarters";
 import Home from "./Routes/Home";
 import Members from "./Routes/about/Members";
 import About from "./Routes/about/About";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Concert from "./Routes/news/Concert";
 import Recruitment from "./Routes/Recruitment";
 import AdminBg from "./Routes/admin/AdminBg";
 import AdminConcert from "./Routes/admin/AdminConcert";
@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/about/headquarters" element={<Headquarters />}></Route>
+        <Route path="/newsletter/concert" element={<Concert />}></Route>
         <Route path="/recruitment" element={<Recruitment />}></Route>
         <Route path="/admin/background" element={<AdminBg />}></Route>
         <Route path="/admin/concert" element={<AdminConcert />}></Route>

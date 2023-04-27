@@ -21,14 +21,14 @@ function Recruitment() {
       >
         <IFrameWrapper>
           <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSctyP7-foFim536aZaju-irOeK5hXiXEP20BO6EXJEKz8vhKQ/viewform?embedded=true"
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdkQoMXFRpbGnKG-rXgg8IlXs-RbT_mwFCUnX7PP1L463_nEA/viewform?embedded=true"
             width="100%"
-            height="1150"
+            height="2600"
             frameBorder={0}
             marginHeight={0}
             marginWidth={0}
           >
-            로딩중…
+            로딩중...
           </iframe>
         </IFrameWrapper>
       </BodyWrapper>

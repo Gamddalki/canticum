@@ -8,9 +8,9 @@ type BodyWrapperProps = {
 };
 
 const MainContents = styled.div`
-  max-width: 952px;
+  max-width: 992px;
   margin: 0 auto;
-  padding: 182px 0px;
+  padding: 182px 40px;
   div {
     margin: 0 auto;
   }

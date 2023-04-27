@@ -3,6 +3,10 @@ import styled from "styled-components";
 import logo from "../img/logo.png";
 import LangToggleBtn from "./LangToggleBtn";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
+import { PC, Mobile } from "../Components/Responsive";
+import { useState } from "react";
 
 const Col = styled.div`
   position: fixed;
@@ -60,7 +64,7 @@ const Items = styled.ul`
   background: ${(props) => props.theme.headerColor};
   white-space: nowrap;
   box-sizing: border-box;
-  z-index: 100;
+  z-index: 1000;
   transform: translate(-50%, 0);
 `;
 
@@ -76,56 +80,195 @@ const Item = styled.li`
   }
 `;
 
+const MenuBarBtn = styled.button`
+  margin-right: 20px;
+  background-color: transparent;
+  border: solid 1px rgba(225, 225, 225, 0.5);
+  width: 30px;
+  height: 30px;
+  color: white;
+`;
+
+const MenuBar = styled.nav`
+  position: absolute;
+  top: 64px;
+  right: 0%;
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  background: ${(props) => props.theme.footerColor};
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 1800;
+  ul {
+    width: 100%;
+  }
+`;
+
+const MenuBarUl = styled(Ul)`
+  display: block;
+  ul {
+    margin-top: 15px;
+    padding: 0px 20px;
+  }
+`;
+
+const MenuBarItems = styled(Items)`
+  left: 0px;
+  top: 0px;
+  transform: none;
+  position: relative;
+`;
+
 function Header() {
   const { t, i18n } = useTranslation("header");
+  const [isToggled, setIsToggled] = useState(false);
   return (
     <Col>
       <a href="/">
         <img src={logo} />
       </a>
-      <Nav>
-        <Ul>
-          <Li>
-            {t("canticum")}
-            <Items>
-              <Link to="/about">
-                <Item>{t("about")}</Item>
+      <PC>
+        <>
+          <Nav>
+            <Ul>
+              <Li>
+                {t("canticum")}
+                <Items>
+                  <Link to="/about">
+                    <Item>{t("about")}</Item>
+                  </Link>
+                </Items>
+              </Li>
+              <Li>
+                {t("news")}
+                <Items>
+                  <Link to="/newsletter/concert">
+                    <Item>{t("concert")}</Item>
+                  </Link>
+                  <Link to="/newsletter">
+                    <Item>{t("newsletter")}</Item>
+                  </Link>
+                </Items>
+              </Li>
+              <Link to="/recruitment">
+                <Li>{t("recruit")}</Li>
               </Link>
-            </Items>
-          </Li>
-          <Li>
-            {t("news")}
-            <Items>
-              <Link to="/newsletter/concert">
-                <Item>{t("concert")}</Item>
+              <Link to="/media">
+                <Li>{t("media")}</Li>
               </Link>
-              <Link to="/newsletter">
-                <Item>{t("newsletter")}</Item>
-              </Link>
-            </Items>
-          </Li>
-          <Link to="/recruitment">
-            <Li>{t("recruit")}</Li>
-          </Link>
-          <Link to="/media">
-            <Li>{t("media")}</Li>
-          </Link>
-          <Li>
-            {t("donation")}
-            <Items>
-              <Link to="/sponsor">
-                <Item>{t("information")}</Item>
-              </Link>
-              <Link to="/sponsor/support">
-                <Item>{t("support")}</Item>
-              </Link>
-            </Items>
-          </Li>
-        </Ul>
-      </Nav>
-      <div>
-        <LangToggleBtn />
-      </div>
+              <Li>
+                {t("donation")}
+                <Items>
+                  <Link to="/sponsor">
+                    <Item>{t("information")}</Item>
+                  </Link>
+                  <Link to="/sponsor/support">
+                    <Item>{t("support")}</Item>
+                  </Link>
+                </Items>
+              </Li>
+            </Ul>
+          </Nav>
+          <div>
+            <LangToggleBtn />
+          </div>
+        </>
+      </PC>
+      <Mobile>
+        <>
+          <MenuBarBtn
+            onClick={() => {
+              setIsToggled((prev) => !prev);
+            }}
+          >
+            {isToggled ? (
+              <FontAwesomeIcon icon={faX} size="1x" />
+            ) : (
+              <FontAwesomeIcon icon={faBars} size="1x" />
+            )}
+          </MenuBarBtn>
+          {isToggled ? (
+            <MenuBar>
+              <MenuBarUl>
+                <Li>
+                  {t("canticum")}
+                  <MenuBarItems>
+                    <Link
+                      to="/about"
+                      onClick={() => {
+                        setIsToggled(false);
+                      }}
+                    >
+                      <Item>{t("about")}</Item>
+                    </Link>
+                  </MenuBarItems>
+                </Li>
+                <Li>
+                  {t("news")}
+                  <MenuBarItems>
+                    <Link
+                      to="/newsletter/concert"
+                      onClick={() => {
+                        setIsToggled(false);
+                      }}
+                    >
+                      <Item>{t("concert")}</Item>
+                    </Link>
+                    <Link
+                      to="/newsletter"
+                      onClick={() => {
+                        setIsToggled(false);
+                      }}
+                    >
+                      <Item>{t("newsletter")}</Item>
+                    </Link>
+                  </MenuBarItems>
+                </Li>
+                <Link
+                  to="/recruitment"
+                  onClick={() => {
+                    setIsToggled(false);
+                  }}
+                >
+                  <Li>{t("recruit")}</Li>
+                </Link>
+                <Link
+                  to="/media"
+                  onClick={() => {
+                    setIsToggled(false);
+                  }}
+                >
+                  <Li>{t("media")}</Li>
+                </Link>
+                <Li>
+                  {t("donation")}
+                  <MenuBarItems>
+                    <Link
+                      to="/sponsor"
+                      onClick={() => {
+                        setIsToggled(false);
+                      }}
+                    >
+                      <Item>{t("information")}</Item>
+                    </Link>
+                    <Link
+                      to="/sponsor/support"
+                      onClick={() => {
+                        setIsToggled(false);
+                      }}
+                    >
+                      <Item>{t("support")}</Item>
+                    </Link>
+                  </MenuBarItems>
+                </Li>
+              </MenuBarUl>
+            </MenuBar>
+          ) : (
+            <></>
+          )}
+        </>
+      </Mobile>
     </Col>
   );
 }

@@ -10,7 +10,7 @@ import {
 const Col = styled.div`
   width: 100%;
   bottom: 0;
-  background-color: #222;
+  background-color: ${(props) => props.theme.footerColor};
   color: ${(props) => props.theme.headertextColor};
   font-weight: 500;
   font-size: 14px;

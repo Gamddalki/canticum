@@ -11,5 +11,6 @@ declare module "styled-components" {
     cardColor: string;
     headerColor: string;
     headertextColor: string;
+    footerColor: string;
   }
 }

@@ -5,6 +5,7 @@ import About from "./Routes/about/About";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Concert from "./Routes/news/Concert";
+import ConcertDetail from "./Routes/news/ConsertDetail";
 import Recruitment from "./Routes/Recruitment";
 import AdminBg from "./Routes/admin/AdminBg";
 import AdminConcert from "./Routes/admin/AdminConcert";
@@ -19,6 +20,10 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/newsletter/concert" element={<Concert />}></Route>
+        <Route
+          path="/newsletter/concert/230530"
+          element={<ConcertDetail />}
+        ></Route>
         <Route path="/recruitment" element={<Recruitment />}></Route>
         <Route path="/admin/background" element={<AdminBg />}></Route>
         <Route path="/admin/concert" element={<AdminConcert />}></Route>

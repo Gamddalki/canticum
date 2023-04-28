@@ -15,6 +15,11 @@ const Col = styled.div`
   font-weight: 500;
   font-size: 14px;
   height: 180px;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    height: 100px;
+    font-size: 12px;
+  }
   position: relative;
   div {
     position: absolute;
@@ -31,6 +36,7 @@ const Col = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, 100%);
+    width: 250px;
   }
 `;
 

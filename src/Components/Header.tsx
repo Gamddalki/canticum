@@ -87,6 +87,8 @@ const MenuBarBtn = styled.button`
   width: 30px;
   height: 30px;
   color: white;
+  text-align: center;
+  align-items: center;
 `;
 
 const MenuBar = styled.nav`
@@ -103,6 +105,11 @@ const MenuBar = styled.nav`
   ul {
     width: 100%;
   }
+  div {
+    position: fixed;
+    right: 0;
+    bottom: 20px;
+  }
 `;
 
 const MenuBarUl = styled(Ul)`
@@ -110,6 +117,13 @@ const MenuBarUl = styled(Ul)`
   ul {
     margin-top: 15px;
     padding: 0px 20px;
+  }
+`;
+
+const MenuBarLi = styled(Li)`
+  &:hover {
+    border-top: none;
+    border-bottom: none;
   }
 `;
 
@@ -189,81 +203,86 @@ function Header() {
             )}
           </MenuBarBtn>
           {isToggled ? (
-            <MenuBar>
-              <MenuBarUl>
-                <Li>
-                  {t("canticum")}
-                  <MenuBarItems>
-                    <Link
-                      to="/about"
-                      onClick={() => {
-                        setIsToggled(false);
-                      }}
-                    >
-                      <Item>{t("about")}</Item>
-                    </Link>
-                  </MenuBarItems>
-                </Li>
-                <Li>
-                  {t("news")}
-                  <MenuBarItems>
-                    <Link
-                      to="/newsletter/concert"
-                      onClick={() => {
-                        setIsToggled(false);
-                      }}
-                    >
-                      <Item>{t("concert")}</Item>
-                    </Link>
-                    <Link
-                      to="/newsletter"
-                      onClick={() => {
-                        setIsToggled(false);
-                      }}
-                    >
-                      <Item>{t("newsletter")}</Item>
-                    </Link>
-                  </MenuBarItems>
-                </Li>
-                <Link
-                  to="/recruitment"
-                  onClick={() => {
-                    setIsToggled(false);
-                  }}
-                >
-                  <Li>{t("recruit")}</Li>
-                </Link>
-                <Link
-                  to="/media"
-                  onClick={() => {
-                    setIsToggled(false);
-                  }}
-                >
-                  <Li>{t("media")}</Li>
-                </Link>
-                <Li>
-                  {t("donation")}
-                  <MenuBarItems>
-                    <Link
-                      to="/sponsor"
-                      onClick={() => {
-                        setIsToggled(false);
-                      }}
-                    >
-                      <Item>{t("information")}</Item>
-                    </Link>
-                    <Link
-                      to="/sponsor/support"
-                      onClick={() => {
-                        setIsToggled(false);
-                      }}
-                    >
-                      <Item>{t("support")}</Item>
-                    </Link>
-                  </MenuBarItems>
-                </Li>
-              </MenuBarUl>
-            </MenuBar>
+            <>
+              <MenuBar>
+                <MenuBarUl>
+                  <MenuBarLi>
+                    {t("canticum")}
+                    <MenuBarItems>
+                      <Link
+                        to="/about"
+                        onClick={() => {
+                          setIsToggled(false);
+                        }}
+                      >
+                        <Item>{t("about")}</Item>
+                      </Link>
+                    </MenuBarItems>
+                  </MenuBarLi>
+                  <MenuBarLi>
+                    {t("news")}
+                    <MenuBarItems>
+                      <Link
+                        to="/newsletter/concert"
+                        onClick={() => {
+                          setIsToggled(false);
+                        }}
+                      >
+                        <Item>{t("concert")}</Item>
+                      </Link>
+                      <Link
+                        to="/newsletter"
+                        onClick={() => {
+                          setIsToggled(false);
+                        }}
+                      >
+                        <Item>{t("newsletter")}</Item>
+                      </Link>
+                    </MenuBarItems>
+                  </MenuBarLi>
+                  <Link
+                    to="/recruitment"
+                    onClick={() => {
+                      setIsToggled(false);
+                    }}
+                  >
+                    <MenuBarLi>{t("recruit")}</MenuBarLi>
+                  </Link>
+                  <Link
+                    to="/media"
+                    onClick={() => {
+                      setIsToggled(false);
+                    }}
+                  >
+                    <MenuBarLi>{t("media")}</MenuBarLi>
+                  </Link>
+                  <MenuBarLi>
+                    {t("donation")}
+                    <MenuBarItems>
+                      <Link
+                        to="/sponsor"
+                        onClick={() => {
+                          setIsToggled(false);
+                        }}
+                      >
+                        <Item>{t("information")}</Item>
+                      </Link>
+                      <Link
+                        to="/sponsor/support"
+                        onClick={() => {
+                          setIsToggled(false);
+                        }}
+                      >
+                        <Item>{t("support")}</Item>
+                      </Link>
+                    </MenuBarItems>
+                  </MenuBarLi>
+                </MenuBarUl>
+                <div>
+                  <LangToggleBtn />
+                </div>
+              </MenuBar>
+            </>
           ) : (
             <></>
           )}

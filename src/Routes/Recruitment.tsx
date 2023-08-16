@@ -1,14 +1,28 @@
 import BodyWrapper from "../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import bg1 from "../img/1.jpg";
+import appform from "../file/칸티쿰합창단원응시원서.docx";
 
-const IFrameWrapper = styled.div`
-  max-width: 730px;
+const ApplicationFormDown = styled.a`
+  text-decoration: underline;
+  font-size: 15pt;
+`;
+
+const ImgBox = styled.div`
   width: 100%;
   height: 100%;
-  background-color: white;
-  border-radius: 10px;
-  padding: auto;
+  overflow: hidden;
+  padding-top: 30px;
+  @media screen and (max-width: 768px) {
+    padding-top: 15px;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+  }
 `;
 
 function Recruitment() {
@@ -20,18 +34,15 @@ function Recruitment() {
         pageSubtitle={t("pagesubtitle")}
         pageTxt={t("pagetxt")}
       >
-        <IFrameWrapper>
-          <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdkQoMXFRpbGnKG-rXgg8IlXs-RbT_mwFCUnX7PP1L463_nEA/viewform?embedded=true"
-            width="100%"
-            height="2600"
-            frameBorder={0}
-            marginHeight={0}
-            marginWidth={0}
-          >
-            로딩중...
-          </iframe>
-        </IFrameWrapper>
+        <ApplicationFormDown
+          href={appform}
+          download="칸티쿰합창단원응시원서.docx"
+        >
+          {t("atxt")}
+          <ImgBox>
+            <img src={bg1} />
+          </ImgBox>
+        </ApplicationFormDown>
       </BodyWrapper>
     </>
   );

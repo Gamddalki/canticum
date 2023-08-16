@@ -11,6 +11,8 @@ import AdminBg from "./Routes/admin/AdminBg";
 import AdminConcert from "./Routes/admin/AdminConcert";
 import AdminNews from "./Routes/admin/AdminNews";
 import AdminMedia from "./Routes/admin/AdminMedia";
+import Newsletter from "./Routes/news/Newsletter";
+import NewsletterDetail from "./Routes/news/NewsletterDetail";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/newsletter" element={<Newsletter />}></Route>
+        <Route path="/newsletter/2305" element={<NewsletterDetail />}></Route>
         <Route path="/newsletter/concert" element={<Concert />}></Route>
         <Route
           path="/newsletter/concert/230530"

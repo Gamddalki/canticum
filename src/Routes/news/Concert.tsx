@@ -1,7 +1,7 @@
 import BodyWrapper from "../../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import conimg1 from "../../img/230530_1.jpg";
+import conimg1 from "../../img/concert/230530_1.jpg";
 import ConcertCard from "../../Components/ConcertCard";
 
 const ConcertBoard = styled.div``;

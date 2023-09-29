@@ -1,11 +1,11 @@
 import BodyWrapper from "../../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import newsimg1 from "../../img/202305_01.jpg";
-import newsimg2 from "../../img/202305_02.jpg";
-import newsimg3 from "../../img/202305_03.jpg";
-import newsimg4 from "../../img/202305_04.jpg";
-import newsimg5 from "../../img/202305_05.jpg";
+import newsimg1 from "../../img/news/202305_01.jpg";
+import newsimg2 from "../../img/news/202305_02.jpg";
+import newsimg3 from "../../img/news/202305_03.jpg";
+import newsimg4 from "../../img/news/202305_04.jpg";
+import newsimg5 from "../../img/news/202305_05.jpg";
 
 const ImgWrapper = styled.div`
   width: 100%;

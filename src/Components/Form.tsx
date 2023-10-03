@@ -21,6 +21,15 @@ const Form = styled.form`
     height: 144px;
     margin-top: 15px;
   }
+  button {
+    float: right;
+    height: 40px;
+    width: 80px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: ${(props) => props.theme.accentColor};
+  }
 `;
 
 export default Form;

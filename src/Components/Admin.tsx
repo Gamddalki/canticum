@@ -66,15 +66,6 @@ const FormOutline = styled.div`
     padding: 10px;
     resize: none;
   }
-  button {
-    float: right;
-    height: 40px;
-    width: 80px;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: ${(props) => props.theme.accentColor};
-  }
 `;
 
 function Admin({ pageSubtitle, children }: AdminProps) {

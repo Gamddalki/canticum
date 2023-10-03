@@ -11,19 +11,27 @@ function AdminBg() {
   const [newBg2, setNewBg2] = useState("");
   const [newBg3, setNewBg3] = useState("");
   const [newBg4, setNewBg4] = useState("");
+  const setNewBg = (id: string, cond: string) => {
+    id === "bg1" && setNewBg1(cond);
+    id === "bg2" && setNewBg2(cond);
+    id === "bg3" && setNewBg3(cond);
+    id === "bg4" && setNewBg4(cond);
+  };
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const id = e.target.id;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = (finishedE: ProgressEvent<FileReader>) => {
-        id == "bg1" && setNewBg1(reader.result as string);
-        id == "bg2" && setNewBg2(reader.result as string);
-        id == "bg3" && setNewBg3(reader.result as string);
-        id == "bg4" && setNewBg4(reader.result as string);
+        setNewBg(id, reader.result as string);
       };
       reader.readAsDataURL(file);
     }
+  };
+  const onClearFile = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLInputElement;
+    const id = target.id;
+    setNewBg(id, "");
   };
   return (
     <Admin pageSubtitle="대문사진 변경">
@@ -33,6 +41,9 @@ function AdminBg() {
           <p>변경하실 대문 사진을 업로드하고 변경 버튼을 눌러주세요.</p>
           <p>16:9 비율이 아닌 경우 사진의 위아래가 잘려보일 수 있습니다.</p>
           <img src={newBg1 ? newBg1 : bg1}></img>
+          <button id="bg1" type="button" onClick={onClearFile}>
+            X
+          </button>
           <input
             id="bg1"
             type="file"

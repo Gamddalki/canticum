@@ -1,12 +1,5 @@
 import Admin from "../../Components/Admin";
-import styled from "styled-components";
-
-const Form = styled.form`
-  div {
-    width: 700px;
-    padding: 30px;
-  }
-`;
+import Form from "../../Components/Form";
 
 function AdminConcert() {
   return (
@@ -14,17 +7,31 @@ function AdminConcert() {
       <Form>
         <div>
           <span>공연 정보</span>
-          <input placeholder="공연명" required></input>
-          <input placeholder="공연일시" required></input>
-          <input placeholder="공연장소" required></input>
-          <input placeholder="공연가격" required></input>
-          <input placeholder="문의처" required></input>
+          <p>제시된 형식에 맞추어 작성해주세요.</p>
+          <p>한글 공연 정보</p>
+          <input
+            placeholder="한글 공연명 (형식: 칸티쿰합창단 제34회 정기 연주회)"
+            required
+          ></input>
+          <input
+            placeholder="한글 공연일시 (형식: 2023년 5월 30일)"
+            required
+          ></input>
+          <p>영문 공연 정보</p>
+          <input
+            placeholder="영문 공연명 (형식: Canticum Choir 34th Concert)"
+            required
+          ></input>
+          <input
+            placeholder="영문 공연일시 (형식: May 30th, 2023)"
+            required
+          ></input>
         </div>
         <div>
-          <span>상세 정보</span>
-          <textarea placeholder="기획의도" required></textarea>
-          <textarea placeholder="프로그램" required></textarea>
-          <textarea placeholder="출연진" required></textarea>
+          <span>공연 포스터</span>
+          <p>
+            !! 파일 선택 순으로 업로드 되므로, 업로드 순서에 주의해주세요 !!
+          </p>
           <input
             type="file"
             accept="image/*"
@@ -34,7 +41,7 @@ function AdminConcert() {
           ></input>
         </div>
         <div>
-          <button>업로드</button>
+          <button id="concertForm">업로드</button>
         </div>
       </Form>
     </Admin>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { isEngAtom } from "../atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const ToggleBtn = styled.button`
   margin-right: 20px;
@@ -16,8 +16,8 @@ const ToggleBtn = styled.button`
 function LangToggleBtn() {
   const { t, i18n } = useTranslation("header");
 
-  const isEng = useRecoilValue(isEngAtom);
-  const setEngAtom = useSetRecoilState(isEngAtom);
+  const [isEng, setEngAtom] = useRecoilState(isEngAtom);
+
   const toggleEngAtom = () => {
     toggleLanguage();
     setEngAtom((prev) => !prev);

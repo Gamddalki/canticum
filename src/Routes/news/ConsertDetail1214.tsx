@@ -1,8 +1,8 @@
 import BodyWrapper from "../../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import conimg1 from "../../img/concert/230530_1.jpg";
-import conimg2 from "../../img/concert/230530_2.jpg";
+import conimg1 from "../../img/concert/231214_1.jpg";
+import conimg2 from "../../img/concert/231214_2.jpg";
 
 const ImgWrapper = styled.div`
   width: 100%;
@@ -17,7 +17,7 @@ function ConcertDetail() {
   return (
     <>
       <BodyWrapper
-        pageTitle={t("contitle")}
+        pageTitle={t("contitle2")}
         pageSubtitle={t("pagetxt")}
         pageTxt={t("pagetxt")}
       >

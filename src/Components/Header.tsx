@@ -168,7 +168,7 @@ function Header() {
               <Link to="/recruitment">
                 <Li>{t("recruit")}</Li>
               </Link>
-              <Link to="/media">
+              {/*<Link to="/media">
                 <Li>{t("media")}</Li>
               </Link>
               <Li>
@@ -179,9 +179,9 @@ function Header() {
                   </Link>
                   <Link to="/sponsor/support">
                     <Item>{t("support")}</Item>
-                  </Link>
+</Link>
                 </Items>
-              </Li>
+              </Li>*/}
             </Ul>
           </Nav>
           <div>
@@ -248,7 +248,7 @@ function Header() {
                   >
                     <MenuBarLi>{t("recruit")}</MenuBarLi>
                   </Link>
-                  <Link
+                  {/*<Link
                     to="/media"
                     onClick={() => {
                       setIsToggled(false);
@@ -276,7 +276,7 @@ function Header() {
                         <Item>{t("support")}</Item>
                       </Link>
                     </MenuBarItems>
-                  </MenuBarLi>
+                      </MenuBarLi>*/}
                 </MenuBarUl>
                 <div>
                   <LangToggleBtn />

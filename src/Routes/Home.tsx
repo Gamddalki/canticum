@@ -3,6 +3,7 @@ import bg1 from "../img/1.jpg";
 import bg2 from "../img/2.jpg";
 import bg3 from "../img/3.jpg";
 import bg4 from "../img/4.jpg";
+import vdo from "../img/videos/popup_recruitment.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -10,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 import { PC, Mobile } from "../Components/Responsive";
+import Popup from "../Components/Popup";
 
 const Background = styled.div`
   width: 100%;
@@ -252,6 +254,7 @@ function Home() {
           >
             <FontAwesomeIcon icon={faChevronRight} size="4x" />
           </SlideBtn>
+          <Popup popupUrl={vdo} />
         </Background>
       </PC>
       <Mobile>
@@ -261,13 +264,14 @@ function Home() {
               <img src={item.img} />
             </MoImgBox>
           ))}
+          <Popup popupUrl={vdo} />
         </MoBackground>
       </Mobile>
       <IframeContainer
-        src1="https://www.youtube.com/embed/WUsjSMXHJXE?autoplay=1&mute=1&loop=1;"
-        src2="https://www.youtube.com/embed/ZUnHFFSTPOY?autoplay=1&mute=1&loop=1;"
-        src3="https://www.youtube.com/embed/PSPzam3fIrk?autoplay=1&mute=1&loop=1;"
-        src4="https://www.youtube.com/embed/ri8Y1nrkiqk?autoplay=1&mute=1&loop=1;"
+        src1="https://www.youtube.com/embed/WUsjSMXHJXE?&mute=1&loop=1;"
+        src2="https://www.youtube.com/embed/ZUnHFFSTPOY?&mute=1&loop=1;"
+        src3="https://www.youtube.com/embed/PSPzam3fIrk?&mute=1&loop=1;"
+        src4="https://www.youtube.com/embed/ri8Y1nrkiqk?&mute=1&loop=1;"
       />
     </>
   );

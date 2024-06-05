@@ -5,8 +5,7 @@ import About from "./Routes/about/About";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Concert from "./Routes/news/Concert";
-import ConcertDetail1 from "./Routes/news/ConsertDetail0530";
-import ConcertDetail2 from "./Routes/news/ConsertDetail1214";
+import ConcertDetail from "./Routes/news/ConsertDetail";
 import Recruitment from "./Routes/Recruitment";
 import AdminBg from "./Routes/admin/AdminBg";
 import AdminConcert from "./Routes/admin/AdminConcert";
@@ -20,24 +19,17 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/newsletter" element={<Newsletter />}></Route>
-        <Route path="/newsletter/2305" element={<NewsletterDetail />}></Route>
-        <Route path="/newsletter/concert" element={<Concert />}></Route>
-        <Route
-          path="/newsletter/concert/230530"
-          element={<ConcertDetail1 />}
-        ></Route>
-        <Route
-          path="/newsletter/concert/231214"
-          element={<ConcertDetail2 />}
-        ></Route>
-        <Route path="/recruitment" element={<Recruitment />}></Route>
-        <Route path="/admin/background" element={<AdminBg />}></Route>
-        <Route path="/admin/concert" element={<AdminConcert />}></Route>
-        <Route path="/admin/newsletter" element={<AdminNews />}></Route>
-        <Route path="/admin/media" element={<AdminMedia />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/newsletter/concert/:id" element={<ConcertDetail />} />
+        <Route path="/newsletter/concert" element={<Concert />} />
+        <Route path="/newsletter/:id" element={<NewsletterDetail />} />
+        <Route path="/newsletter" element={<Newsletter />} />
+        <Route path="/recruitment" element={<Recruitment />} />
+        <Route path="/admin/background" element={<AdminBg />} />
+        <Route path="/admin/concert" element={<AdminConcert />} />
+        <Route path="/admin/newsletter" element={<AdminNews />} />
+        <Route path="/admin/media" element={<AdminMedia />} />
       </Routes>
       <Footer />
     </Router>

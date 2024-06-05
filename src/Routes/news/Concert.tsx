@@ -1,9 +1,8 @@
 import BodyWrapper from "../../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import conimg1 from "../../img/concert/230530_1.jpg";
-import conimg2 from "../../img/concert/231214_1.jpg";
 import ConcertCard from "../../Components/ConcertCard";
+import useImages from "../../hooks/useImages";
 
 const ConcertBoard = styled.div`
   display: flex;
@@ -14,6 +13,10 @@ const ConcertBoard = styled.div`
 
 function Concert() {
   const { t, i18n } = useTranslation("concert");
+  const { images, error } = useImages({ type: "concert" });
+
+  const coverImages = images.filter((image) => image.filename.includes("_1"));
+
   return (
     <>
       <BodyWrapper
@@ -22,18 +25,19 @@ function Concert() {
         pageTxt={t("pagetxt")}
       >
         <ConcertBoard>
-          <ConcertCard
-            linkto="/newsletter/concert/231214"
-            imgsrc={conimg2}
-            contitle={t("contitle2")}
-            conwhen={t("conwhen2")}
-          ></ConcertCard>
-          <ConcertCard
-            linkto="/newsletter/concert/230530"
-            imgsrc={conimg1}
-            contitle={t("contitle1")}
-            conwhen={t("conwhen1")}
-          ></ConcertCard>
+          {error ? (
+            <div>{t("error_loading_images")}</div> // 이미지 로드 오류 메시지
+          ) : (
+            coverImages.map((image, index) => (
+              <ConcertCard
+                key={index}
+                linkto={`/newsletter/concert/${image.filename.split("_")[0]}`} // 링크 생성
+                imgsrc={image.filepath}
+                contitle={t(`contitle${image.filename.split("_")[0]}`)}
+                conwhen={t(`conwhen${image.filename.split("_")[0]}`)}
+              ></ConcertCard>
+            ))
+          )}
         </ConcertBoard>
       </BodyWrapper>
     </>

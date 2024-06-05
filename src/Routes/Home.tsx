@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import bg1 from "../img/1.jpg";
-import bg2 from "../img/2.jpg";
-import bg3 from "../img/3.jpg";
-import bg4 from "../img/4.jpg";
+import useImages from "../hooks/useImages";
 import vdo from "../img/videos/popup_recruitment.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -75,12 +72,44 @@ const MoImgBox = styled(ImgBox)`
 `;
 
 /* bg img Array */
-const bgArr = [
-  { img: bg1, key: 1 },
-  { img: bg2, key: 2 },
-  { img: bg3, key: 3 },
-  { img: bg4, key: 4 },
-];
+// const bgArr = [
+//   { img: bg1, key: 1 },
+//   { img: bg2, key: 2 },
+//   { img: bg3, key: 3 },
+//   { img: bg4, key: 4 },
+// ];
+
+const BgImages = () => {
+  const { images, error } = useImages({ type: "background" });
+
+  if (error) {
+    console.log("Error fetching images:", error);
+    return [];
+  }
+
+  if (!images.length) {
+    return [];
+  }
+
+  // 파일명으로 정렬된 이미지 배열 생성
+  const sortedImages = images.slice().sort((a, b) => {
+    if (a.filename < b.filename) return -1;
+    if (a.filename > b.filename) return 1;
+    return 0;
+  });
+
+  console.log("sorted", sortedImages);
+
+  // 이미지 배열을 파일명과 경로로 변환하여 bgArr로 반환
+  const bgArr = sortedImages.map((image, index) => ({
+    path: `${image.filepath}`,
+    key: index + 1,
+  }));
+
+  console.log("bg", bgArr);
+
+  return bgArr;
+};
 
 /* useInterval Hook */
 interface IUseInterval {
@@ -162,6 +191,8 @@ function Home() {
 
   const slideRef = useRef<HTMLDivElement>(null);
 
+  const bgArr = BgImages();
+
   const BG_NUM = bgArr.length;
   const beforeSlide = bgArr[BG_NUM - 1];
   const afterSlide = bgArr[0];
@@ -240,11 +271,23 @@ function Home() {
               }%)`,
             }}
           >
-            {slideArr.map((item, index) => (
-              <ImgBox key={index}>
-                <img src={item.img} />
-              </ImgBox>
-            ))}
+            {slideArr.length === 0 ? (
+              <div
+                style={{
+                  backgroundColor: "black",
+                  width: "100%",
+                  height: "100vh",
+                }}
+              ></div>
+            ) : (
+              slideArr
+                .filter((item) => item && item.path)
+                .map((item, index) => (
+                  <ImgBox key={index}>
+                    <img src={item.path} />
+                  </ImgBox>
+                ))
+            )}
           </ImgContainer>
           <SlideBtn
             className="Right"
@@ -261,7 +304,7 @@ function Home() {
         <MoBackground>
           {bgArr.map((item, index) => (
             <MoImgBox key={index}>
-              <img src={item.img} />
+              <img src={item.path} />
             </MoImgBox>
           ))}
           <Popup popupUrl={vdo} />

@@ -19,7 +19,6 @@ const Form = styled.form`
   img {
     width: 256px;
     height: 144px;
-    margin-top: 15px;
   }
   button {
     float: right;

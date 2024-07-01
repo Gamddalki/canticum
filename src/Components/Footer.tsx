@@ -61,7 +61,7 @@ function Footer() {
         >
           <FontAwesomeIcon icon={faYoutube} size="2x" />
         </a>
-        <a href="/">
+        <a href="https://www.instagram.com/canticumchoir/" target={"_blank"}>
           <FontAwesomeIcon icon={faInstagram} size="2x" />
         </a>
         <a href="https://www.facebook.com/canticum.kr" target={"_blank"}>

@@ -131,6 +131,64 @@ app.post("/api/uploads/:type/:filename", (req, res) => {
   });
 });
 
+// 공연정보, 소식지 텍스트
+app.get("/api/texts/:type", async (req, res) => {
+  const { type } = req.params;
+  console.log("텍스트 요청 받음:", { type });
+
+  try {
+    const [results] = await connection.query(
+      `SELECT * FROM newsletters WHERE type = ?`,
+      [type]
+    );
+
+    // 쿼리 결과 확인
+    console.log("텍스트 쿼리 결과:", results);
+
+    // 결과가 있는 경우
+    res.json(results);
+  } catch (err) {
+    console.error("Error executing database query:", err);
+    res.status(500).send(err);
+  }
+});
+
+// 공연정보, 소식지 텍스트 저장 API
+app.post("/api/text-uploads/:type", async (req, res) => {
+  const { type } = req.params;
+  const { date, kortit, engtit } = req.body;
+
+  const generateCode = (type, date) => {
+    const typePrefix = type.charAt(0).toLowerCase();
+    const dateParts = date
+      .split("-")
+      .map((part) => part.slice(-2).padStart(2, "0"));
+    return `${typePrefix}${dateParts.join("")}`;
+  };
+  const code = generateCode(type, date);
+
+  console.log("텍스트 저장 요청 받음:", { type, date, kortit, engtit });
+
+  // 데이터베이스에 텍스트 정보 저장
+  const query =
+    "INSERT INTO newsletters (date, kortit, engtit, type, code) VALUES (?, ?, ?, ?, ?)";
+  const queryParams = [date, kortit, engtit, type, code];
+
+  try {
+    await connection.query(query, queryParams);
+    res.send({
+      msg: "Text Saved to Database!",
+      type,
+      date,
+      kortit,
+      engtit,
+    });
+  } catch (dbErr) {
+    console.error("Error saving text info to database:", dbErr);
+    res.status(500).send(dbErr);
+  }
+});
+
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "/build/index.html"));
 });

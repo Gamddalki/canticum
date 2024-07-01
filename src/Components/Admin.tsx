@@ -29,7 +29,7 @@ const Nav = styled.nav`
 const Ul = styled.ul`
   display: flex;
   align-items: center;
-  width: 630px;
+  width: 750px;
   justify-content: space-between;
 `;
 
@@ -78,6 +78,12 @@ function Admin({ pageSubtitle, children }: AdminProps) {
               <Link to="/admin/background">
                 <Li>대문사진</Li>
               </Link>
+              <Link to="/admin/video">
+                <Li>대표영상</Li>
+              </Link>
+              <Link to="/admin/popup">
+                <Li>팝업영상</Li>
+              </Link>
               <Link to="/admin/concert">
                 <Li>공연안내</Li>
               </Link>
@@ -85,7 +91,7 @@ function Admin({ pageSubtitle, children }: AdminProps) {
                 <Li>소식지</Li>
               </Link>
               <Link to="/admin/media">
-                <Li>자료실</Li>
+                <Li>공지사항</Li>
               </Link>
             </Ul>
           </Nav>

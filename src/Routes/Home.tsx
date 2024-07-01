@@ -79,7 +79,7 @@ const MoImgBox = styled(ImgBox)`
 //   { img: bg4, key: 4 },
 // ];
 
-const BgImages = () => {
+export const BgImages = () => {
   const { images, error } = useImages({ type: "background" });
 
   if (error) {

@@ -1,79 +1,70 @@
 import React, { useState } from "react";
 import Admin from "../../Components/Admin";
 import Form from "../../Components/Form";
-import bg1 from "../../img/1.jpg";
-import bg2 from "../../img/2.jpg";
-import bg3 from "../../img/3.jpg";
-import bg4 from "../../img/4.jpg";
+import { BgImages } from "../Home";
+import ImageUploader from "../../Components/ImageUploader";
+import axios from "axios";
 
 function AdminBg() {
-  const [newBg1, setNewBg1] = useState("");
-  const [newBg2, setNewBg2] = useState("");
-  const [newBg3, setNewBg3] = useState("");
-  const [newBg4, setNewBg4] = useState("");
-  const setNewBg = (id: string, cond: string) => {
-    id === "bg1" && setNewBg1(cond);
-    id === "bg2" && setNewBg2(cond);
-    id === "bg3" && setNewBg3(cond);
-    id === "bg4" && setNewBg4(cond);
+  const bgArr = BgImages();
+
+  const [images, setImages] = useState<{ [key: string]: File | null }>({});
+
+  const handleFileSelect = (id: string, file: File | null) => {
+    setImages((prev) => ({ ...prev, [id]: file }));
   };
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const id = e.target.id;
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = (finishedE: ProgressEvent<FileReader>) => {
-        setNewBg(id, reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+  const uploadImage = async (id: string, selectedImage: File) => {
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    const fileType = selectedImage.type.split("/")[1];
+    const FileName = `${Number(id) + 1}.${fileType}`;
+    try {
+      await axios.post(`/api/uploads/background/${FileName}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Image uploaded successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Image upload failed", error);
     }
   };
-  const onClearFile = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLInputElement;
-    const id = target.id;
-    setNewBg(id, "");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    for (const id in images) {
+      const selectedImage = images[id];
+      if (selectedImage) {
+        try {
+          await uploadImage(id, selectedImage);
+        } catch (error) {
+          console.error(`Failed to upload image ${id}`, error);
+        }
+      }
+    }
   };
+
   return (
     <Admin pageSubtitle="대문사진 변경">
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <div>
           <span>대문사진 변경</span>
           <p>변경하실 대문 사진을 업로드하고 변경 버튼을 눌러주세요.</p>
           <p>16:9 비율이 아닌 경우 사진의 위아래가 잘려보일 수 있습니다.</p>
-          <img src={newBg1 ? newBg1 : bg1}></img>
-          <button id="bg1" type="button" onClick={onClearFile}>
-            X
-          </button>
-          <input
-            id="bg1"
-            type="file"
-            accept="image/*"
-            onChange={onFileChange}
-          ></input>
-          <img src={newBg2 ? newBg2 : bg2}></img>
-          <input
-            id="bg2"
-            type="file"
-            accept="image/*"
-            onChange={onFileChange}
-          ></input>
-          <img src={newBg3 ? newBg3 : bg3}></img>
-          <input
-            id="bg3"
-            type="file"
-            accept="image/*"
-            onChange={onFileChange}
-          ></input>
-          <img src={newBg4 ? newBg4 : bg4}></img>
-          <input
-            id="bg4"
-            type="file"
-            accept="image/*"
-            onChange={onFileChange}
-          ></input>
+          {bgArr.map((item, index) => (
+            <ImageUploader
+              id={index.toString()}
+              originURL={item.path}
+              onFileSelect={handleFileSelect}
+            ></ImageUploader>
+          ))}
         </div>
         <div>
-          <button id="bgForm">변경</button>
+          <button id="bgForm" type="submit">
+            저장
+          </button>
         </div>
       </Form>
     </Admin>

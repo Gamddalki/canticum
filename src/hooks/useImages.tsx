@@ -4,6 +4,7 @@ import { fetchImages } from "../api/imageApi"; // API 호출 함수 import
 interface ImageData {
   filename: string;
   filepath: string;
+  code: string;
 }
 
 const useImages = ({ type, id }: { type: string; id?: string }) => {
@@ -15,7 +16,6 @@ const useImages = ({ type, id }: { type: string; id?: string }) => {
     const getImages = async () => {
       try {
         const imagesData = await fetchImages(type, id);
-        console.log("이거야");
         console.log(imagesData);
         setImages(imagesData);
       } catch (error) {

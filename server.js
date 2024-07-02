@@ -3,6 +3,7 @@ const multer = require("multer");
 const cors = require("cors");
 const app = express();
 const path = require("path");
+const fs = require("fs");
 const PORT = 8080; //process.env.PORT
 const connection = require("./db");
 
@@ -111,13 +112,34 @@ app.post("/api/uploads/:type/:filename", (req, res) => {
         const filepath = `/uploads/${type}/${filename}`;
         const code = codeFormat(type, filename);
 
-        // 데이터베이스에 이미지 정보 저장
-        const query =
-          "INSERT INTO images (filename, filepath, type, code) VALUES (?, ?, ?, ?)";
-        const queryParams = [filename, filepath, type, code];
-
         try {
+          // 데이터베이스에서 같은 code가 있는지 확인
+          const [rows] = await connection.query(
+            "SELECT * FROM images WHERE code = ?",
+            [code]
+          );
+          if (rows.length > 0) {
+            // 기존 데이터베이스 항목 삭제
+            await connection.query("DELETE FROM images WHERE code = ?", [code]);
+
+            // 기존 파일 시스템에서 이미지 삭제
+            const existingFilepath = rows[0].filepath;
+            fs.unlink(
+              path.join(__dirname, "public", existingFilepath),
+              (fsErr) => {
+                if (fsErr) {
+                  console.error("Error deleting existing file:", fsErr);
+                }
+              }
+            );
+          }
+
+          // 새로운 이미지 정보 데이터베이스에 저장
+          const query =
+            "INSERT INTO images (filename, filepath, type, code) VALUES (?, ?, ?, ?)";
+          const queryParams = [filename, filepath, type, code];
           await connection.query(query, queryParams);
+
           res.send({
             msg: "File Uploaded and Saved to Database!",
             file: filepath,

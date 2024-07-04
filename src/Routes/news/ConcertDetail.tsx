@@ -15,15 +15,15 @@ const ImgWrapper = styled.div`
   }
 `;
 
-function NewsletterDetail() {
-  const { t, i18n } = useTranslation("newsletter");
+function ConcertDetail() {
+  const { t, i18n } = useTranslation("concert");
   const { texts, error: textError } = useTexts({ type: "concert" });
   const isEng = useRecoilValue(isEngAtom);
 
   const { id } = useParams();
   console.log(id);
   const { images, error: imageError } = useImages({
-    type: "news",
+    type: "concert",
     id: id ? id : "",
   });
 
@@ -65,4 +65,4 @@ function NewsletterDetail() {
   );
 }
 
-export default NewsletterDetail;
+export default ConcertDetail;

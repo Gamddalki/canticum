@@ -3,7 +3,6 @@ import Admin from "../../Components/Admin";
 import Form from "../../Components/Form";
 import ImagesUploader from "../../Components/ImagesUploader";
 import axios from "axios";
-import { concert } from "../../locales/en";
 
 function AdminConcert() {
   const [date, setDate] = useState("");

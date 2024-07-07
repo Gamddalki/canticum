@@ -4,7 +4,8 @@ import Admin from "../../Components/Admin";
 import useTexts from "../../hooks/useTexts";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const Div = styled.div`
   width: 700px;
@@ -40,6 +41,17 @@ function AdminView() {
   }
   const { texts, error: textError } = useTexts({ type: `${type}` });
 
+  const handleDelete = async (code: string) => {
+    try {
+      await axios.delete(`/api/delete/${code}`);
+      alert("삭제되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("삭제 과정에서 에러가 발생했습니다.");
+    }
+  };
+
   return (
     <Admin pageSubtitle={`${pagetitle} 조회 및 수정`}>
       <Div>
@@ -53,7 +65,7 @@ function AdminView() {
                   <Link to={`/admin/${type}/${text.code}`}>
                     <span>{text.kortit}</span>
                   </Link>
-                  <button>
+                  <button onClick={() => handleDelete(text.code)}>
                     <FontAwesomeIcon icon={faTrashCan} size="1x" />
                   </button>
                 </li>

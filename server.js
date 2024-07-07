@@ -268,6 +268,42 @@ app.post("/api/text-uploads/:type", async (req, res) => {
   }
 });
 
+//삭제 코드
+app.delete("/api/delete/:code", async (req, res) => {
+  const { code } = req.params;
+
+  try {
+    // images 테이블에서 해당 code를 가진 행을 찾음
+    const [rows] = await connection.query(
+      "SELECT * FROM images WHERE code = ?",
+      [code]
+    );
+
+    if (rows.length > 0) {
+      // 파일 시스템에서 이미지 파일 삭제
+      rows.forEach((row) => {
+        const filePath = path.join(__dirname, "public", row.filepath);
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error("Error deleting file:", err);
+          }
+        });
+      });
+    }
+
+    // newsletter 테이블에서 해당 code를 가진 행 삭제
+    await connection.query("DELETE FROM newsletters WHERE code = ?", [code]);
+
+    // images 테이블에서 해당 code를 가진 행 삭제
+    await connection.query("DELETE FROM images WHERE code = ?", [code]);
+
+    res.send({ msg: "File and Records Deleted Successfully!" });
+  } catch (err) {
+    console.error("Error deleting file and records:", err);
+    res.status(500).send("Error deleting file and records");
+  }
+});
+
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "/build/index.html"));
 });

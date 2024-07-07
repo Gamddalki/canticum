@@ -8,15 +8,9 @@ function AdminNewsletter() {
         <div>
           <span>소식지 정보</span>
           <p>제시된 형식에 맞추어 작성해주세요.</p>
-          <p>한글 소식지 정보</p>
+          <input type="month"></input>
           <input placeholder="한글 소식지명" required></input>
-          <input
-            placeholder="한글 공연일시 (형식: 2023년 5월)"
-            required
-          ></input>
-          <p>영문 소식지 정보</p>
           <input placeholder="영문 소식지명" required></input>
-          <input placeholder="영문 공연일시 (형식: May, 2023)" required></input>
         </div>
         <div>
           <span>소식지 업로드</span>

@@ -278,7 +278,7 @@ function Home() {
           >
             <FontAwesomeIcon icon={faChevronRight} size="4x" />
           </SlideBtn>
-          {vdo && vdo.images.length > 0 ? (
+          {vdo && vdo.images && vdo.images.length > 0 ? (
             <Popup popupUrl={vdo.images[0].filepath} />
           ) : (
             <></>
@@ -292,7 +292,7 @@ function Home() {
               <img src={item.path} />
             </MoImgBox>
           ))}
-          {vdo && vdo.images.length > 0 ? (
+          {vdo && vdo.images && vdo.images.length > 0 ? (
             <Popup popupUrl={vdo.images[0].filepath} />
           ) : (
             <></>

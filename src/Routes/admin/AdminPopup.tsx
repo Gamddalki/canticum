@@ -46,12 +46,28 @@ function AdminPopup() {
     }
   };
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await axios.delete("/api/delete/p000001");
+      alert("삭제되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("삭제 과정에서 에러가 발생했습니다.");
+    }
+  };
+
   return (
     <Admin pageSubtitle="팝업 영상 변경 및 삭제">
       <Form onSubmit={handleSubmit}>
         <div>
           <span>팝업 영상 변경</span>
           <p>변경하실 팝업 영상을 업로드하고 저장 버튼을 눌러주세요.</p>
+          <div>
+            <button onClick={handleDelete}>팝업 삭제</button>
+          </div>
           {images && images.length > 0 ? (
             <VideoUploader
               id="popup"

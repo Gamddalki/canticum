@@ -18,31 +18,38 @@ function AdminBg() {
     const formData = new FormData();
     formData.append("image", selectedImage);
     const fileType = selectedImage.type.split("/")[1];
-    const FileName = `${Number(id) + 1}.${fileType}`;
+    const FileName = `${Number(id) + 1}_${Date.now()}.${fileType}`;
     try {
       await axios.post(`/api/uploads/background/${FileName}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Image uploaded successfully!");
-      window.location.reload();
+      return FileName;
     } catch (error) {
-      console.error("Image upload failed", error);
+      console.error(`Image upload failed for ${id}`, error);
+      throw error;
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    for (const id in images) {
-      const selectedImage = images[id];
-      if (selectedImage) {
-        try {
-          await uploadImage(id, selectedImage);
-        } catch (error) {
-          console.error(`Failed to upload image ${id}`, error);
+    const uploadPromises = Object.entries(images)
+      .map(([id, selectedImage]) => {
+        if (selectedImage) {
+          return uploadImage(id, selectedImage);
         }
-      }
+        return null;
+      })
+      .filter((promise) => promise !== null);
+
+    try {
+      await Promise.all(uploadPromises);
+      alert("배경 이미지가 업로드 되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to upload one or more images", error);
+      alert("배경 이미지 업로드에 실패하였습니다.");
     }
   };
 

@@ -37,27 +37,29 @@ function AdminConcert() {
     e.preventDefault();
 
     const allImages = Object.values(images).flat().filter(Boolean) as File[];
-    for (let i = 0; i < allImages.length; i++) {
-      const image = allImages[i];
-      try {
-        await uploadImage(i, image);
-      } catch (error) {
-        console.error(`Failed to upload image ${i}`, error);
-      }
-    }
-
     try {
-      await axios.post("/api/text-uploads/concert", {
-        date,
-        kortit,
-        engtit,
-      });
-      console.log("Text uploaded successfully!");
-    } catch (error) {
-      console.error("Text upload failed", error);
-    }
+      await Promise.all(
+        allImages.map((image, index) => uploadImage(index, image))
+      );
 
-    window.location.reload(); // Reload after all uploads are complete
+      try {
+        await axios.post("/api/text-uploads/concert", {
+          date,
+          kortit,
+          engtit,
+        });
+        console.log("Text uploaded successfully!");
+      } catch (error) {
+        console.error("Text upload failed", error);
+        alert("공연 안내 업로드에 실패하였습니다.");
+      }
+
+      alert("공연 안내가 업로드 되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to upload images", error);
+      alert("공연 안내 업로드에 실패하였습니다.");
+    }
   };
 
   return (

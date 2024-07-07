@@ -48,7 +48,7 @@ function createUploadMiddleware(uploadPath, multiple = true) {
 
   if (uploadPath === "popup") return upload.single("video");
   else {
-    return multiple ? upload.array("files", 10) : upload.single("file");
+    return multiple ? upload.array("images", 10) : upload.single("image");
   }
 }
 
@@ -115,6 +115,7 @@ app.post("/api/uploads/:type/:filename", async (req, res) => {
     }
   };
 
+  // 대표 영상 업데이트
   if (type === "video") {
     const { filepath, code } = req.body;
 
@@ -171,7 +172,7 @@ app.post("/api/uploads/:type/:filename", async (req, res) => {
             );
             console.log(code);
 
-            if (rows.length > 0) {
+            if (type === ("popup" || "background") && rows.length > 0) {
               // 기존 파일 시스템에서 이미지 삭제
               const existingFilepath = rows[0].filepath;
               fs.unlink(
@@ -182,13 +183,18 @@ app.post("/api/uploads/:type/:filename", async (req, res) => {
                   }
                 }
               );
+              // 이미지 경로 업데이트
+              const query =
+                "UPDATE images SET filename = ?, filepath = ? WHERE code = ?";
+              const queryParams = [filename, filepath, code];
+              await connection.query(query, queryParams);
+            } else {
+              // 이미지 경로 저장
+              const query =
+                "INSERT INTO images (filename, filepath, type, code) VALUES (?, ?, ?, ?)";
+              const queryParams = [filename, filepath, type, code];
+              await connection.query(query, queryParams);
             }
-
-            // 이미지 경로 업데이트
-            const query =
-              "UPDATE images SET filename = ?, filepath = ? WHERE code = ?";
-            const queryParams = [filename, filepath, code];
-            await connection.query(query, queryParams);
 
             res.send({
               msg: "File Uploaded and Saved to Database!",

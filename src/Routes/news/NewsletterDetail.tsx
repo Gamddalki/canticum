@@ -36,6 +36,12 @@ function NewsletterDetail() {
     return <div>Loading...</div>;
   }
 
+  const sortedImages = images.sort((a, b) => {
+    if (a.filename < b.filename) return -1;
+    if (a.filename > b.filename) return 1;
+    return 0;
+  });
+
   const getTitle = (code: string) => {
     const text = texts.find((t) => t.code === code);
     return text ? (isEng ? text.engtit : text.kortit) : "";
@@ -56,7 +62,7 @@ function NewsletterDetail() {
         pageTxt=""
       >
         <ImgWrapper>
-          {images.map((image, index) => (
+          {sortedImages.map((image, index) => (
             <img key={index} src={image.filepath}></img>
           ))}
         </ImgWrapper>

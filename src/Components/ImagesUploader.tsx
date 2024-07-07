@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 interface ImagesUploaderProps {
   id: string;
@@ -16,7 +17,6 @@ const ImgUploaderBox = styled.div`
 
 const ImgBox = styled.div`
   width: 400px;
-  display: flex;
   flex-wrap: wrap;
   gap: 10px;
 `;
@@ -76,18 +76,60 @@ function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
     }
   };
 
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
+
+    const updatedPreviewImages = Array.from(previewImages);
+    const [removed] = updatedPreviewImages.splice(result.source.index, 1);
+    updatedPreviewImages.splice(result.destination.index, 0, removed);
+
+    const updatedFiles = Array.from(selectedFiles);
+    const [removedFile] = updatedFiles.splice(result.source.index, 1);
+    updatedFiles.splice(result.destination.index, 0, removedFile);
+
+    setPreviewImages(updatedPreviewImages);
+    setSelectedFiles(updatedFiles);
+    onFileSelect(id, updatedFiles);
+  };
+
   return (
     <ImgUploaderBox>
-      <ImgBox>
-        {previewImages.map((imageUrl, index) => (
-          <div key={index} style={{ position: "relative" }}>
-            <ImagePreview src={imageUrl} alt={`Preview ${index}`} />
-            <button type="button" onClick={() => handleImageRemove(index)}>
-              X
-            </button>
-          </div>
-        ))}
-      </ImgBox>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="images" direction="vertical">
+          {(provided) => (
+            <ImgBox {...provided.droppableProps} ref={provided.innerRef}>
+              {previewImages.map((imageUrl, index) => (
+                <Draggable
+                  key={index}
+                  draggableId={`item-${index}`}
+                  index={index}
+                >
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        ...provided.draggableProps.style,
+                        position: "relative",
+                      }}
+                    >
+                      <ImagePreview src={imageUrl} alt={`Preview ${index}`} />
+                      <button
+                        type="button"
+                        onClick={() => handleImageRemove(index)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ImgBox>
+          )}
+        </Droppable>
+      </DragDropContext>
       <UploadButtons>
         <input
           type="file"

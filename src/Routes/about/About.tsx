@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import BodyWrapper from "../../Components/BodyWrapper";
 import { useTranslation } from "react-i18next";
-import aboutimg from "../../img/1.jpg";
+import { BgImages } from "../Home";
 
 const ImgBox = styled.div`
   width: 100%;
@@ -30,6 +30,8 @@ const IFrameWrapper = styled.div`
 
 function About() {
   const { t, i18n } = useTranslation("about");
+  const bgArr = BgImages();
+
   return (
     <>
       <BodyWrapper
@@ -38,9 +40,13 @@ function About() {
         pageTxt={t("pagetxt")}
       >
         <>
-          <ImgBox>
-            <img src={aboutimg} />
-          </ImgBox>
+          {bgArr[0] ? (
+            <ImgBox>
+              <img src={bgArr[0].path} />
+            </ImgBox>
+          ) : (
+            <></>
+          )}
           <BodyWrapper
             pageTitle={t("ipagetitle")}
             pageSubtitle={t("ipagesubtitle")}

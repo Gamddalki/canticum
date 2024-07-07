@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import useImages from "../hooks/useImages";
-import vdo from "../img/videos/popup_recruitment.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -164,27 +163,6 @@ const Iframe = ({ src }: { src: string }) => {
   );
 };
 
-const IframeContainer = ({
-  src1,
-  src2,
-  src3,
-  src4,
-}: {
-  src1: string;
-  src2: string;
-  src3: string;
-  src4: string;
-}) => {
-  return (
-    <IframeBox>
-      <Iframe src={src1} />
-      <Iframe src={src2} />
-      <Iframe src={src3} />
-      <Iframe src={src4} />
-    </IframeBox>
-  );
-};
-
 function Home() {
   const [slideIndex, setSlideIndex] = useState(1);
   const [slideInterval, setSlideInterval] = useState(6000); // slideInterval 6 secs
@@ -249,6 +227,9 @@ function Home() {
     console.log(slideInterval);
   };
 
+  const { images, error: imageError } = useImages({ type: "video" });
+  const vdo = useImages({ type: "popup" });
+
   return (
     <>
       <PC>
@@ -297,7 +278,11 @@ function Home() {
           >
             <FontAwesomeIcon icon={faChevronRight} size="4x" />
           </SlideBtn>
-          <Popup popupUrl={vdo} />
+          {vdo && vdo.images.length > 0 ? (
+            <Popup popupUrl={vdo.images[0].filepath} />
+          ) : (
+            <></>
+          )}
         </Background>
       </PC>
       <Mobile>
@@ -307,15 +292,18 @@ function Home() {
               <img src={item.path} />
             </MoImgBox>
           ))}
-          <Popup popupUrl={vdo} />
+          {vdo && vdo.images.length > 0 ? (
+            <Popup popupUrl={vdo.images[0].filepath} />
+          ) : (
+            <></>
+          )}
         </MoBackground>
       </Mobile>
-      <IframeContainer
-        src1="https://www.youtube.com/embed/WUsjSMXHJXE?&mute=1&loop=1;"
-        src2="https://www.youtube.com/embed/ZUnHFFSTPOY?&mute=1&loop=1;"
-        src3="https://www.youtube.com/embed/PSPzam3fIrk?&mute=1&loop=1;"
-        src4="https://www.youtube.com/embed/ri8Y1nrkiqk?&mute=1&loop=1;"
-      />
+      <IframeBox>
+        {images.map((item, index) => (
+          <Iframe key={index} src={item.filepath} />
+        ))}
+      </IframeBox>
     </>
   );
 }

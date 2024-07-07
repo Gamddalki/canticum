@@ -17,7 +17,7 @@ const ImgWrapper = styled.div`
 
 function NewsletterDetail() {
   const { t, i18n } = useTranslation("newsletter");
-  const { texts, error: textError } = useTexts({ type: "concert" });
+  const { texts, error: textError } = useTexts({ type: "news" });
   const isEng = useRecoilValue(isEngAtom);
 
   const { id } = useParams();

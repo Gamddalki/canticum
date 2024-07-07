@@ -24,29 +24,32 @@ function createMulterStorage(uploadPath) {
 }
 
 // Check file type
-function checkImgType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png|gif|mp4|avi|mkv|mov/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb("Error: Images Only!");
+    cb("Error: Images and Videos Only!");
   }
 }
 
-function createImgUploadMiddleware(uploadPath, multiple = true) {
+function createUploadMiddleware(uploadPath, multiple = true) {
   const storage = createMulterStorage(uploadPath);
 
   const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 }, // 1MB limit
+    limits: { fileSize: 100000000 }, // 100MB limit
     fileFilter: (req, file, cb) => {
-      checkImgType(file, cb);
+      checkFileType(file, cb);
     },
   });
 
-  return multiple ? upload.array("images", 10) : upload.single("image");
+  if (uploadPath === "popup") return upload.single("video");
+  else {
+    return multiple ? upload.array("files", 10) : upload.single("file");
+  }
 }
 
 app.use(express.static(path.join(__dirname, "build")));
@@ -93,64 +96,112 @@ app.get("/api/images/:type/:id?", async (req, res) => {
 });
 
 // 이미지 업로드 API
-app.post("/api/uploads/:type/:filename", (req, res) => {
+app.post("/api/uploads/:type/:filename", async (req, res) => {
   const { type, filename } = req.params;
-  const imgUpload = createImgUploadMiddleware(`${type}`, false);
+
   const codeFormat = (type, filename) => {
-    const prefix = type.charAt(0).toLowerCase();
-    const suffix = filename.replace(/[^\d]/g, "").slice(0, 6).padStart(6, "0");
-    return `${prefix}${suffix}`;
+    if (type === "popup") return "p000001";
+    else {
+      const prefix = type.charAt(0).toLowerCase();
+      let suffix;
+
+      if (type === "background") {
+        suffix = filename.replace(/[^\d]/g, "").slice(0, 1).padStart(6, "0");
+      } else {
+        suffix = filename.replace(/[^\d]/g, "").slice(0, 6).padStart(6, "0");
+      }
+
+      return `${prefix}${suffix}`;
+    }
   };
 
-  imgUpload(req, res, async (err) => {
-    if (err) {
-      res.status(400).send(err);
-    } else {
-      if (req.file == undefined) {
-        res.status(400).send("Error: No File Selected!");
-      } else {
-        const filepath = `/uploads/${type}/${filename}`;
-        const code = codeFormat(type, filename);
+  if (type === "video") {
+    const { filepath, code } = req.body;
 
-        try {
-          // 데이터베이스에서 같은 code가 있는지 확인
-          const [rows] = await connection.query(
-            "SELECT * FROM images WHERE code = ?",
-            [code]
-          );
-          if (rows.length > 0) {
-            // 기존 데이터베이스 항목 삭제
-            await connection.query("DELETE FROM images WHERE code = ?", [code]);
+    if (!filepath || !code) {
+      return res.status(400).send("Error: No Filepath or Code Provided!");
+    }
 
-            // 기존 파일 시스템에서 이미지 삭제
-            const existingFilepath = rows[0].filepath;
-            fs.unlink(
-              path.join(__dirname, "public", existingFilepath),
-              (fsErr) => {
-                if (fsErr) {
-                  console.error("Error deleting existing file:", fsErr);
-                }
-              }
-            );
+    try {
+      // 데이터베이스에서 같은 code가 있는지 확인
+      const [rows] = await connection.query(
+        "SELECT * FROM images WHERE code = ?",
+        [code]
+      );
+
+      if (rows.length > 0) {
+        const query = "UPDATE images SET filepath = ? WHERE code = ?";
+        const queryParams = [filepath, code];
+
+        await connection.query(query, queryParams, (dbErr) => {
+          if (dbErr) {
+            console.error("Error updating file info in database:", dbErr);
+            return res.status(500).send(dbErr);
           }
+        });
 
-          // 새로운 이미지 정보 데이터베이스에 저장
-          const query =
-            "INSERT INTO images (filename, filepath, type, code) VALUES (?, ?, ?, ?)";
-          const queryParams = [filename, filepath, type, code];
-          await connection.query(query, queryParams);
+        res.send({
+          msg: "File Updated and Saved to Database!",
+          file: filepath,
+        });
+      } else return res.status(400).send("Error: Out of Bound!");
+    } catch (dbErr) {
+      console.error("Error saving file info to database:", dbErr);
+      res.status(500).send(dbErr);
+    }
+  } else {
+    const imgUpload = createUploadMiddleware(`${type}`, false);
 
-          res.send({
-            msg: "File Uploaded and Saved to Database!",
-            file: filepath,
-          });
-        } catch (dbErr) {
-          console.error("Error saving file info to database:", dbErr);
-          res.status(500).send(dbErr);
+    imgUpload(req, res, async (err) => {
+      if (err) {
+        console.error("Image upload middleware error:", err);
+        res.status(400).send(err);
+      } else {
+        if (req.file == undefined) {
+          res.status(400).send("Error: No File Selected!");
+        } else {
+          const filepath = `/uploads/${type}/${filename}`;
+          const code = codeFormat(type, filename);
+
+          try {
+            // 데이터베이스에서 같은 code가 있는지 확인
+            const [rows] = await connection.query(
+              "SELECT * FROM images WHERE code = ?",
+              [code]
+            );
+            console.log(code);
+
+            if (rows.length > 0) {
+              // 기존 파일 시스템에서 이미지 삭제
+              const existingFilepath = rows[0].filepath;
+              fs.unlink(
+                path.join(__dirname, "public", existingFilepath),
+                (fsErr) => {
+                  if (fsErr) {
+                    console.error("Error deleting existing file:", fsErr);
+                  }
+                }
+              );
+            }
+
+            // 이미지 경로 업데이트
+            const query =
+              "UPDATE images SET filename = ?, filepath = ? WHERE code = ?";
+            const queryParams = [filename, filepath, code];
+            await connection.query(query, queryParams);
+
+            res.send({
+              msg: "File Uploaded and Saved to Database!",
+              file: filepath,
+            });
+          } catch (dbErr) {
+            console.error("Error saving file info to database:", dbErr);
+            res.status(500).send(dbErr);
+          }
         }
       }
-    }
-  });
+    });
+  }
 });
 
 // 공연정보, 소식지 텍스트

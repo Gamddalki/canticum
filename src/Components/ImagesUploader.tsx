@@ -30,9 +30,8 @@ const UploadButtons = styled.div`
 `;
 
 const ImagePreview = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+  height: 150px;
+  object-fit: contain;
 `;
 
 function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
@@ -42,8 +41,10 @@ function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
 
   useEffect(() => {
     if (originURL && originURL.length > 0) {
+      console.log(originURL);
       setPreviewImages(originURL);
       setSelectedFiles(originURL);
+      onFileSelect(id, originURL);
     } else {
       setPreviewImages([]);
       setSelectedFiles([]);

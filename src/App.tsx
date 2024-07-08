@@ -33,7 +33,7 @@ function App() {
         <Route path="/admin/popup" element={<AdminPopup />} />
         <Route path="/admin/concert/:code" element={<AdminConcert />} />
         <Route path="/admin/concert" element={<AdminConcert />} />
-        <Route path="/admin/newsletter/:code" element={<AdminNews />} />
+        <Route path="/admin/news/:code" element={<AdminNews />} />
         <Route path="/admin/newsletter" element={<AdminNews />} />
         <Route path="/admin/notice" element={<AdminNotice />} />
         <Route path="/admin/view/:type" element={<AdminView />} />

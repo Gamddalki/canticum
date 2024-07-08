@@ -9,13 +9,21 @@ type ImageState = {
   [key: string]: (File | string)[] | null;
 };
 
+type ExistingImage = {
+  id: number;
+  filename: string;
+  filepath: string;
+  type: string;
+  code: string;
+};
+
 function AdminConcert() {
   const { code } = useParams();
   const [date, setDate] = useState("");
   const [kortit, setKortit] = useState("");
   const [engtit, setEngtit] = useState("");
   const [images, setImages] = useState<ImageState>({});
-  const [existingImages, setExistingImages] = useState([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchConcertData = async () => {
@@ -28,13 +36,25 @@ function AdminConcert() {
           setDate(textResponse.data.date);
           setKortit(textResponse.data.kortit);
           setEngtit(textResponse.data.engtit);
-          setExistingImages(imageResponse.data);
+          const filepaths = imageResponse.data.map(
+            (image: ExistingImage) => image.filepath
+          );
+          setExistingImages(filepaths);
         } catch (error) {
           console.error("Failed to fetch concert data", error);
         }
       }
     };
     fetchConcertData();
+
+    // 컴포넌트가 언마운트될 때 상태를 초기화하는 클린업 함수
+    return () => {
+      setDate("");
+      setKortit("");
+      setEngtit("");
+      setImages({});
+      setExistingImages([]);
+    };
   }, [code]);
 
   const handleFileSelect = (id: string, files: (File | string)[]) => {
@@ -121,14 +141,19 @@ function AdminConcert() {
           </p>
           <ImagesUploader
             id="con"
+            originURL={existingImages}
             onFileSelect={handleFileSelect}
           ></ImagesUploader>
         </div>
-        <div>
-          <button id="concertForm" type="submit">
-            업로드
-          </button>
-        </div>
+        {code ? (
+          <></>
+        ) : (
+          <div>
+            <button id="concertForm" type="submit">
+              업로드
+            </button>
+          </div>
+        )}
       </Form>
     </Admin>
   );

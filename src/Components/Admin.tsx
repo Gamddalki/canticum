@@ -119,7 +119,7 @@ function Admin({ pageSubtitle, children }: AdminProps) {
                     <Item>작성</Item>
                   </Link>
                   <Link to="/admin/view/concert">
-                    <Item>수정</Item>
+                    <Item>삭제</Item>
                   </Link>
                 </Items>
               </Li>
@@ -130,7 +130,7 @@ function Admin({ pageSubtitle, children }: AdminProps) {
                     <Item>작성</Item>
                   </Link>
                   <Link to="/admin/view/newsletter">
-                    <Item>수정</Item>
+                    <Item>삭제</Item>
                   </Link>
                 </Items>
               </Li>
@@ -141,7 +141,7 @@ function Admin({ pageSubtitle, children }: AdminProps) {
                     <Item>작성</Item>
                   </Link>
                   <Link to="/admin/view/notice">
-                    <Item>수정</Item>
+                    <Item>삭제</Item>
                   </Link>
                 </Items>
               </Li>

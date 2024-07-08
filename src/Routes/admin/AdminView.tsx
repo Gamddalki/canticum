@@ -52,6 +52,10 @@ function AdminView() {
     }
   };
 
+  const sortedTexts = texts
+    ? [...texts].sort((a, b) => b.code.localeCompare(a.code))
+    : [];
+
   return (
     <Admin pageSubtitle={`${pagetitle} 조회 및 수정`}>
       <Div>
@@ -59,8 +63,8 @@ function AdminView() {
           <p style={{ color: "red" }}>에러 발생: {textError}</p>
         ) : (
           <ul>
-            {texts && texts.length > 0 ? (
-              texts.map((text, index) => (
+            {sortedTexts.length > 0 ? (
+              sortedTexts.map((text, index) => (
                 <li key={index}>
                   <Link to={`/admin/${type}/${text.code}`}>
                     <span>{text.kortit}</span>

@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Admin from "../../Components/Admin";
 import Form from "../../Components/Form";
 import ImagesUploader from "../../Components/ImagesUploader";
 import axios from "axios";
 
+type ImageState = {
+  [key: string]: (File | string)[] | null;
+};
+
 function AdminConcert() {
+  const { code } = useParams();
   const [date, setDate] = useState("");
   const [kortit, setKortit] = useState("");
   const [engtit, setEngtit] = useState("");
-  const [images, setImages] = useState<{ [key: string]: File[] | null }>({});
+  const [images, setImages] = useState<ImageState>({});
+  const [existingImages, setExistingImages] = useState([]);
 
-  const handleFileSelect = (id: string, files: File[] | null) => {
+  useEffect(() => {
+    const fetchConcertData = async () => {
+      if (code) {
+        const imgId = code.slice(-6);
+        try {
+          const textResponse = await axios.get(`/api/texts/concert/${code}`);
+          const imageResponse = await axios.get(`/api/images/concert/${imgId}`);
+
+          setDate(textResponse.data.date);
+          setKortit(textResponse.data.kortit);
+          setEngtit(textResponse.data.engtit);
+          setExistingImages(imageResponse.data);
+        } catch (error) {
+          console.error("Failed to fetch concert data", error);
+        }
+      }
+    };
+    fetchConcertData();
+  }, [code]);
+
+  const handleFileSelect = (id: string, files: (File | string)[]) => {
     setImages((prev) => ({ ...prev, [id]: files }));
   };
 
@@ -42,20 +69,20 @@ function AdminConcert() {
         allImages.map((image, index) => uploadImage(index, image))
       );
 
+      const payload = { date, kortit, engtit, code };
+      const apiUrl = code
+        ? `/api/text-uploads/concert/${code}`
+        : "/api/text-uploads/concert";
+
       try {
-        await axios.post("/api/text-uploads/concert", {
-          date,
-          kortit,
-          engtit,
-        });
+        await axios.post(apiUrl, payload);
         console.log("Text uploaded successfully!");
+        alert("공연 안내가 업로드 되었습니다.");
+        window.location.reload();
       } catch (error) {
         console.error("Text upload failed", error);
         alert("공연 안내 업로드에 실패하였습니다.");
       }
-
-      alert("공연 안내가 업로드 되었습니다.");
-      window.location.reload();
     } catch (error) {
       console.error("Failed to upload images", error);
       alert("공연 안내 업로드에 실패하였습니다.");

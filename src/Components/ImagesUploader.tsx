@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 interface ImagesUploaderProps {
   id: string;
   originURL?: string[]; // 초기 이미지 경로들을 배열로 받음
-  onFileSelect: (id: string, files: File[]) => void; // 여러 개의 파일을 전달
+  onFileSelect: (id: string, files: (File | string)[]) => void; // 여러 개의 파일 또는 URL을 전달
 }
 
 const ImgUploaderBox = styled.div`
@@ -37,14 +37,16 @@ const ImagePreview = styled.img`
 
 function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<(File | string)[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (originURL && originURL.length > 0) {
       setPreviewImages(originURL);
+      setSelectedFiles(originURL);
     } else {
       setPreviewImages([]);
+      setSelectedFiles([]);
     }
   }, [originURL]);
 
@@ -71,7 +73,11 @@ function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
     if (inputRef.current) {
       inputRef.current.value = "";
       const dataTransfer = new DataTransfer();
-      updatedFiles.forEach((file) => dataTransfer.items.add(file));
+      updatedFiles.forEach((file) => {
+        if (file instanceof File) {
+          dataTransfer.items.add(file);
+        }
+      });
       inputRef.current.files = dataTransfer.files;
     }
   };
@@ -98,7 +104,7 @@ function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
         <Droppable droppableId="images" direction="vertical">
           {(provided) => (
             <ImgBox {...provided.droppableProps} ref={provided.innerRef}>
-              {previewImages.map((imageUrl, index) => (
+              {previewImages.map((image, index) => (
                 <Draggable
                   key={index}
                   draggableId={`item-${index}`}
@@ -114,7 +120,7 @@ function ImagesUploader({ id, originURL, onFileSelect }: ImagesUploaderProps) {
                         position: "relative",
                       }}
                     >
-                      <ImagePreview src={imageUrl} alt={`Preview ${index}`} />
+                      <ImagePreview src={image} alt={`Preview ${index}`} />
                       <button
                         type="button"
                         onClick={() => handleImageRemove(index)}

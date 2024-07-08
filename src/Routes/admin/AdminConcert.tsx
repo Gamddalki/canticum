@@ -90,9 +90,7 @@ function AdminConcert() {
       );
 
       const payload = { date, kortit, engtit, code };
-      const apiUrl = code
-        ? `/api/text-uploads/concert/${code}`
-        : "/api/text-uploads/concert";
+      const apiUrl = "/api/text-uploads/concert";
 
       try {
         await axios.post(apiUrl, payload);

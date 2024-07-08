@@ -91,9 +91,7 @@ function AdminNewsletter() {
       );
 
       const payload = { date, kortit, engtit, code };
-      const apiUrl = code
-        ? `/api/text-uploads/news/${code}`
-        : "/api/text-uploads/news";
+      const apiUrl = "/api/text-uploads/news";
 
       try {
         await axios.post(apiUrl, payload);

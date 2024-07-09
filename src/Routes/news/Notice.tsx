@@ -19,6 +19,9 @@ const Div = styled.div`
     border-bottom: 1px solid #c1c1c1;
     font-size: 18px;
     background-color: ${(props) => props.theme.footerColor};
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+    }
     &:hover {
       color: ${(props) => props.theme.accentColor};
     }
@@ -27,6 +30,9 @@ const Div = styled.div`
 
 const DateSpan = styled.span`
   font-size: 14px;
+  @media screen and (max-width: 768px) {
+    font-size: 8px;
+  }
 `;
 
 const Pagination = styled.div`

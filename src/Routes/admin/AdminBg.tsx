@@ -4,6 +4,7 @@ import Form from "../../Components/Form";
 import { BgImages } from "../Home";
 import ImageUploader from "../../Components/ImageUploader";
 import axios from "axios";
+import Password from "../../Components/Password";
 
 function AdminBg() {
   const bgArr = BgImages();
@@ -55,25 +56,28 @@ function AdminBg() {
 
   return (
     <Admin pageSubtitle="대문사진 변경">
-      <Form onSubmit={handleSubmit}>
-        <div>
-          <span>대문사진 변경</span>
-          <p>변경하실 대문 사진을 업로드하고 변경 버튼을 눌러주세요.</p>
-          <p>16:9 비율이 아닌 경우 사진의 위아래가 잘려보일 수 있습니다.</p>
-          {bgArr.map((item, index) => (
-            <ImageUploader
-              id={index.toString()}
-              originURL={item.path}
-              onFileSelect={handleFileSelect}
-            ></ImageUploader>
-          ))}
-        </div>
-        <div>
-          <button id="bgForm" type="submit">
-            저장
-          </button>
-        </div>
-      </Form>
+      <>
+        <Form onSubmit={handleSubmit}>
+          <div>
+            <span>대문사진 변경</span>
+            <p>변경하실 대문 사진을 업로드하고 변경 버튼을 눌러주세요.</p>
+            <p>16:9 비율이 아닌 경우 사진의 위아래가 잘려보일 수 있습니다.</p>
+            {bgArr.map((item, index) => (
+              <ImageUploader
+                id={index.toString()}
+                originURL={item.path}
+                onFileSelect={handleFileSelect}
+              ></ImageUploader>
+            ))}
+          </div>
+          <div>
+            <button id="bgForm" type="submit">
+              저장
+            </button>
+          </div>
+        </Form>
+        <Password></Password>
+      </>
     </Admin>
   );
 }

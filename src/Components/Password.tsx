@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import bcrypt from "bcryptjs";
 
 const PopupBackground = styled.div`
   position: fixed;
@@ -17,33 +18,40 @@ const PopupBackground = styled.div`
 const PopupContainer = styled.div`
   background: ${(props) => props.theme.footerColor};
   border-radius: 13px;
-  width: 550px;
+  width: 280px;
   padding: 15px;
-  @media screen and (max-width: 768px) {
-    width: 300px;
-  }
-`;
-
-const PopupContent = styled.div`
   text-align: center;
-  h2 {
-    padding: 10px;
-    font-weight: 500;
-    font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    width: 180px;
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0 5px 0;
-  button {
-    color: ${(props) => props.theme.textColor};
-  }
+const Button = styled.button`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.accentColor};
+  color: black;
+  cursor: pointer;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 function Password() {
   const [isLogin, setLogin] = useState(false);
+  const [password, setPassword] = useState("");
+  const correctPassword =
+    "$2a$10$wiS5J26VwuOE0oj2rDmIxePY80Kwe0zZCI7/iKV3S60W/0IPKN8f6";
 
   useEffect(() => {
     const lastLoginTime = localStorage.getItem("login");
@@ -64,9 +72,15 @@ function Password() {
     }
   }, []);
 
-  const login = () => {
-    setLogin(true);
-    localStorage.setItem("login", new Date().toString());
+  const handleLogin = async () => {
+    const isMatch = await bcrypt.compare(password, correctPassword);
+    if (isMatch) {
+      setLogin(true);
+      localStorage.setItem("login", new Date().toString());
+      alert("로그인 되었습니다.");
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+    }
   };
 
   if (isLogin) {
@@ -75,12 +89,13 @@ function Password() {
     return (
       <PopupBackground>
         <PopupContainer>
-          <PopupContent>
-            <input></input>
-            <ButtonContainer>
-              <button onClick={login}>로그인</button>
-            </ButtonContainer>
-          </PopupContent>
+          <Input
+            type="password"
+            value={password}
+            placeholder="비밀번호"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button onClick={handleLogin}>Login</Button>
         </PopupContainer>
       </PopupBackground>
     );

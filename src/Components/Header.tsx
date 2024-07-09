@@ -227,12 +227,12 @@ function Header() {
                     </MenuBarItems>
                   </MenuBarLi>
                   <Link
-                    to="/recruitment"
+                    to="/notice"
                     onClick={() => {
                       setIsToggled(false);
                     }}
                   >
-                    <MenuBarLi>{t("recruit")}</MenuBarLi>
+                    <MenuBarLi>{t("notice")}</MenuBarLi>
                   </Link>
                 </MenuBarUl>
                 <div>

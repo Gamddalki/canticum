@@ -125,7 +125,7 @@ function AdminNotice() {
     try {
       const encodedFileName = encodeURIComponent(selectedFile.name);
       await axios.post(
-        `/api/uploads-notice/${encodedFileName}/${generateCode()}`,
+        `/api/uploads-notice/${encodedFileName}/${code}`,
         formData,
         {
           headers: {
@@ -147,11 +147,13 @@ function AdminNotice() {
       return;
     }
 
+    const code = generateCode();
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("mainText", mainText);
     formData.append("type", "noti");
-    formData.append("code", generateCode());
+    formData.append("code", code);
 
     const allFiles = Object.values(selectedFiles)
       .flat()
@@ -163,7 +165,7 @@ function AdminNotice() {
         title,
         mainText,
         type: "noti",
-        code: `${generateCode()}`,
+        code: `${code}`,
       };
       const apiUrl = "/api/text-notice";
 

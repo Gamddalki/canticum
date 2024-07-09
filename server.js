@@ -6,51 +6,10 @@ const path = require("path");
 const fs = require("fs");
 const PORT = 8080; //process.env.PORT
 const connection = require("./db");
+const createUploadMiddleware = require("./src/middleware/createUploadMiddleware");
 
 app.use(cors());
 app.use(express.json());
-
-// multer 설정
-function createMulterStorage(uploadPath) {
-  return multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, `public/uploads/${uploadPath}`)); // 파일 저장 경로
-    },
-    filename: function (req, file, cb) {
-      const newFileName = `${req.params.filename}`;
-      cb(null, newFileName);
-    },
-  });
-}
-
-// Check file type
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif|mp4|avi|mkv|mov/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb("Error: Images and Videos Only!");
-  }
-}
-
-function createUploadMiddleware(uploadPath, multiple = true) {
-  const storage = createMulterStorage(uploadPath);
-
-  const upload = multer({
-    storage: storage,
-    limits: { fileSize: 100000000 }, // 100MB limit
-    fileFilter: (req, file, cb) => {
-      checkFileType(file, cb);
-    },
-  });
-
-  if (uploadPath === "popup") return upload.single("video");
-  else {
-    return multiple ? upload.array("images", 10) : upload.single("image");
-  }
-}
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads"))); // 업로드된 파일을 제공하는 라우트

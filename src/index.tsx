@@ -8,6 +8,7 @@ import axios from "axios";
 import "./locales";
 
 axios.defaults.baseURL = "/";
+axios.defaults.withCredentials = true;
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');

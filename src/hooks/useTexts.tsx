@@ -7,6 +7,7 @@ interface Newsletters {
   kortit: string;
   engtit: string;
   code: string;
+  id: string;
 }
 
 interface UseTextsProps {

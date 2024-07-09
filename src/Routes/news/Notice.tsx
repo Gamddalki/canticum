@@ -63,7 +63,7 @@ function Notice() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const sortedTexts = texts
-    ? [...texts].sort((a, b) => b.date.localeCompare(a.date))
+    ? [...texts].sort((a, b) => Number(b.id) - Number(a.id))
     : [];
 
   const totalPages = Math.ceil(sortedTexts.length / ITEMS_PER_PAGE);

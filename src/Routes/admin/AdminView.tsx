@@ -56,7 +56,7 @@ function AdminView() {
   let sortedTexts;
   if (type === "noti") {
     sortedTexts = texts
-      ? [...texts].sort((a, b) => b.date.localeCompare(a.date))
+      ? [...texts].sort((a, b) => Number(b.id) - Number(a.id))
       : [];
   } else {
     sortedTexts = texts

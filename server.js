@@ -1,14 +1,27 @@
 const express = require("express");
-const multer = require("multer");
 const cors = require("cors");
 const app = express();
 const path = require("path");
 const fs = require("fs");
-const PORT = 8080; //process.env.PORT
+const PORT = 8080;
 const connection = require("./db");
 const createUploadMiddleware = require("./src/middleware/createUploadMiddleware");
 
-app.use(cors());
+const whitelist = ["http://canticum.co.kr"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      // 만일 whitelist 배열에 origin 인자가 있을 경우 또는 origin이 null인 경우
+      callback(null, true); // cors 허용
+    } else {
+      callback(new Error("Not Allowed Origin!")); // cors 비허용
+    }
+  },
+  methods: ["GET", "POST", "DELETE"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "build")));
@@ -324,6 +337,7 @@ app.post("/api/text-notice", async (req, res) => {
   const { title, mainText, type, code } = req.body;
   const now = new Date();
   const date = now.toLocaleDateString("en-CA");
+
   try {
     // Insert new concert data
     const query =

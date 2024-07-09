@@ -30,6 +30,7 @@ const Div = styled.div`
 function AdminView() {
   let { type } = useParams();
   let pagetitle;
+
   if (type === "concert") {
     pagetitle = "공연안내";
   } else if (type === "newsletter") {
@@ -52,9 +53,16 @@ function AdminView() {
     }
   };
 
-  const sortedTexts = texts
-    ? [...texts].sort((a, b) => b.code.localeCompare(a.code))
-    : [];
+  let sortedTexts;
+  if (type === "noti") {
+    sortedTexts = texts
+      ? [...texts].sort((a, b) => b.date.localeCompare(a.date))
+      : [];
+  } else {
+    sortedTexts = texts
+      ? [...texts].sort((a, b) => b.code.localeCompare(a.code))
+      : [];
+  }
 
   return (
     <Admin pageSubtitle={`${pagetitle} 조회 및 수정`}>

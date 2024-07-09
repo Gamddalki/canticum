@@ -35,6 +35,7 @@ function App() {
         <Route path="/admin/concert" element={<AdminConcert />} />
         <Route path="/admin/news/:code" element={<AdminNews />} />
         <Route path="/admin/newsletter" element={<AdminNews />} />
+        <Route path="/admin/noti/:code" element={<AdminNotice />} />
         <Route path="/admin/notice" element={<AdminNotice />} />
         <Route path="/admin/view/:type" element={<AdminView />} />
       </Routes>

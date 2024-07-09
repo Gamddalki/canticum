@@ -17,6 +17,7 @@ app.use("/uploads", express.static(path.join(__dirname, "public/uploads"))); // 
 // 이미지 type, id로 구분해 이미지 가져오는 API
 app.get("/api/images/:type/:id?", async (req, res) => {
   const { type, id } = req.params;
+  const field = type === "noti" ? "code" : "filename";
 
   let query;
   let queryParams;
@@ -24,10 +25,11 @@ app.get("/api/images/:type/:id?", async (req, res) => {
   console.log("요청 받음:", { type, id });
 
   if (id) {
-    query = "SELECT * FROM images WHERE type = ? AND filename LIKE ?";
-    queryParams = [type, id + "%"];
+    query = `SELECT * FROM images WHERE type = ? AND ${field} LIKE ?`;
+    const idParams = type === "noti" ? "%" + id : id + "%";
+    queryParams = [type, idParams];
   } else {
-    query = "SELECT * FROM images WHERE type = ?";
+    query = `SELECT * FROM  images WHERE type = ?`;
     queryParams = [type];
   }
 
@@ -180,18 +182,60 @@ app.post("/api/uploads/:type/:filename", async (req, res) => {
   }
 });
 
+app.post("/api/uploads-notice/:filename/:code", async (req, res) => {
+  const { filename, code } = req.params;
+  const type = "noti";
+  console.log(filename, code, type);
+
+  const fileUpload = createUploadMiddleware(`${type}`, false);
+
+  fileUpload(req, res, async (err) => {
+    if (err) {
+      console.error("File upload middleware error:", err);
+      return res.status(400).send(err);
+    }
+
+    if (!req.files || req.files.length === 0) {
+      console.error("No file selected!");
+      return res.status(400).send("Error: No File Selected!");
+    }
+
+    const filepath = `/uploads/noti/${filename}`;
+    console.log("File path:", filepath);
+
+    try {
+      const query =
+        "INSERT INTO images (filename, filepath, type, code) VALUES (?, ?, ?, ?)";
+      const queryParams = [filename, filepath, type, code];
+      console.log("Executing query:", query, queryParams);
+      await connection.query(query, queryParams);
+
+      res.send({
+        msg: "File Uploaded and Saved to Database!",
+        file: filepath,
+      });
+    } catch (dbErr) {
+      console.error("Error saving file info to database:", dbErr);
+      res.status(500).send(dbErr);
+    }
+  });
+});
+
 // 공연정보, 소식지 텍스트
 app.get("/api/texts/:type/:code?", async (req, res) => {
   const { type, code } = req.params;
   console.log("텍스트 요청 받음:", { type, code });
 
+  const table = type === "noti" ? "notices" : "newsletters";
+
   if (code) {
     // Handle the case when both type and code are provided
     try {
       const [row] = await connection.query(
-        "SELECT * FROM newsletters WHERE code = ? AND type = ?",
+        `SELECT * FROM ${table} WHERE code = ? AND type = ?`,
         [code, type]
       );
+      console.log(row);
 
       if (row.length > 0) {
         res.send(row[0]);
@@ -206,7 +250,7 @@ app.get("/api/texts/:type/:code?", async (req, res) => {
     // Handle the case when only type is provided
     try {
       const [rows] = await connection.query(
-        "SELECT * FROM newsletters WHERE type = ?",
+        `SELECT * FROM ${table} WHERE type = ?`,
         [type]
       );
 
@@ -219,8 +263,8 @@ app.get("/api/texts/:type/:code?", async (req, res) => {
 });
 
 // 공연정보, 소식지 텍스트 저장 API
-app.post("/api/text-uploads/:type/:code?", async (req, res) => {
-  const { type, code } = req.params;
+app.post("/api/text-uploads/:type", async (req, res) => {
+  const { type } = req.params;
   const { date, kortit, engtit } = req.body;
 
   const generateCode = (type, date) => {
@@ -243,7 +287,7 @@ app.post("/api/text-uploads/:type/:code?", async (req, res) => {
     return `${typePrefix}${dateParts.join("")}`;
   };
 
-  const theCode = code || generateCode(type, date);
+  const theCode = generateCode(type, date);
 
   console.log("텍스트 저장 요청 받음:", {
     type,
@@ -256,19 +300,11 @@ app.post("/api/text-uploads/:type/:code?", async (req, res) => {
   // 데이터베이스에 텍스트 정보 저장
 
   try {
-    if (code) {
-      // Update existing concert data
-      const query =
-        "UPDATE newsletters SET date = ?, kortit = ?, engtit = ? WHERE code = ? AND type = ?";
-      const queryParams = [date, kortit, engtit, theCode, type];
-      await connection.query(query, queryParams);
-    } else {
-      // Insert new concert data
-      const query =
-        "INSERT INTO newsletters (date, kortit, engtit, type, code) VALUES (?, ?, ?, ?, ?)";
-      const queryParams = [date, kortit, engtit, type, theCode];
-      await connection.query(query, queryParams);
-    }
+    // Insert new concert data
+    const query =
+      "INSERT INTO newsletters (date, kortit, engtit, type, code) VALUES (?, ?, ?, ?, ?)";
+    const queryParams = [date, kortit, engtit, type, theCode];
+    await connection.query(query, queryParams);
 
     res.send({
       msg: "Text Saved to Database!",
@@ -284,14 +320,40 @@ app.post("/api/text-uploads/:type/:code?", async (req, res) => {
   }
 });
 
+app.post("/api/text-notice", async (req, res) => {
+  const { title, mainText, type, code } = req.body;
+  const now = new Date();
+  const date = now.toLocaleDateString("en-CA");
+  try {
+    // Insert new concert data
+    const query =
+      "INSERT INTO notices (date, kortit, engtit, type, code) VALUES (?, ?, ?, ?, ?)";
+    const queryParams = [date, title, mainText, type, code];
+    await connection.query(query, queryParams);
+
+    res.send({
+      msg: "Text Saved to Database!",
+      title,
+      mainText,
+      type,
+      code,
+      date,
+    });
+  } catch (dbErr) {
+    console.error("Error saving text info to database:", dbErr);
+    res.status(500).send(dbErr);
+  }
+});
+
 //삭제 코드
 app.delete("/api/delete/:code", async (req, res) => {
   const { code } = req.params;
+  const texttable = code.startsWith("a") ? "notices" : "newsletters";
 
   try {
     // images 테이블에서 해당 code를 가진 행을 찾음
     const [rows] = await connection.query(
-      "SELECT * FROM images WHERE code = ?",
+      `SELECT * FROM images WHERE code = ?`,
       [code]
     );
 
@@ -308,10 +370,10 @@ app.delete("/api/delete/:code", async (req, res) => {
     }
 
     // newsletter 테이블에서 해당 code를 가진 행 삭제
-    await connection.query("DELETE FROM newsletters WHERE code = ?", [code]);
+    await connection.query(`DELETE FROM ${texttable} WHERE code = ?`, [code]);
 
     // images 테이블에서 해당 code를 가진 행 삭제
-    await connection.query("DELETE FROM images WHERE code = ?", [code]);
+    await connection.query(`DELETE FROM images WHERE code = ?`, [code]);
 
     res.send({ msg: "File and Records Deleted Successfully!" });
   } catch (err) {

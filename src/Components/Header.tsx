@@ -165,8 +165,8 @@ function Header() {
                   </Link>
                 </Items>
               </Li>
-              <Link to="/recruitment">
-                <Li>{t("recruit")}</Li>
+              <Link to="/notice">
+                <Li>{t("notice")}</Li>
               </Link>
             </Ul>
           </Nav>

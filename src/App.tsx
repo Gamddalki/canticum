@@ -5,7 +5,6 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Concert from "./Routes/news/Concert";
 import ConcertDetail from "./Routes/news/ConcertDetail";
-import Recruitment from "./Routes/Recruitment";
 import AdminBg from "./Routes/admin/AdminBg";
 import AdminConcert from "./Routes/admin/AdminConcert";
 import AdminNews from "./Routes/admin/AdminNews";
@@ -15,6 +14,8 @@ import NewsletterDetail from "./Routes/news/NewsletterDetail";
 import AdminVideo from "./Routes/admin/AdminVideo";
 import AdminPopup from "./Routes/admin/AdminPopup";
 import AdminView from "./Routes/admin/AdminView";
+import NoticeDetail from "./Routes/news/NoticeDetail";
+import Notice from "./Routes/news/Notice";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Route path="/newsletter/concert" element={<Concert />} />
         <Route path="/newsletter/:id" element={<NewsletterDetail />} />
         <Route path="/newsletter" element={<Newsletter />} />
-        <Route path="/recruitment" element={<Recruitment />} />
+        <Route path="/notice/:id" element={<NoticeDetail />} />
+        <Route path="/notice" element={<Notice />} />
         <Route path="/admin/background" element={<AdminBg />} />
         <Route path="/admin/video" element={<AdminVideo />} />
         <Route path="/admin/popup" element={<AdminPopup />} />

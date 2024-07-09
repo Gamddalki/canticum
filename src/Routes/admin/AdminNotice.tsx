@@ -118,7 +118,7 @@ function AdminNotice() {
     return code;
   };
 
-  const uploadFile = async (id: number, selectedFile: File) => {
+  const uploadFile = async (id: number, selectedFile: File, code: string) => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
@@ -159,13 +159,15 @@ function AdminNotice() {
       .flat()
       .filter(Boolean) as File[];
     try {
-      await Promise.all(allFiles.map((file, index) => uploadFile(index, file)));
+      await Promise.all(
+        allFiles.map((file, index) => uploadFile(index, file, code))
+      );
 
       const payload = {
         title,
         mainText,
         type: "noti",
-        code: `${code}`,
+        code: code,
       };
       const apiUrl = "/api/text-notice";
 

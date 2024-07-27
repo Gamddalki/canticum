@@ -46,6 +46,7 @@ const PageTitle = styled.div`
     line-height: 25px;
     display: block;
     padding-bottom: 30px;
+    white-space: pre-line;
   }
 `;
 

@@ -10,6 +10,7 @@ Freelance Web Development Project (2023-01 ~ 2024-07)
 
 ## From Artistic harmony to Digital harmony
 — transforming choir identity into a full-featured, client-centered web experience.
+
 <img width="1280" height="336" alt="image" src="https://github.com/user-attachments/assets/ea7076a9-10c9-4a8e-a6ba-68b39f0d81e4" />
 
 ### 🎼 Motivation
@@ -17,7 +18,9 @@ Canticum Choir requested a webpage that reflected both its artistic spirit and p
 
 ### 🎼 Approach
 As a freelance full-stack developer and UI/UX designer, I led the project end-to-end, from initial client consultation to deployment and long-term maintenance. I crafted a responsive UI/UX inspired by the choir’s visual identity and implemented an admin dashboard connected to a SQL database. This system allowed real-time content updates, encompassing both the public-facing site and a secure admin interface.
+
 <img width="6400" height="2400" alt="image" src="https://github.com/user-attachments/assets/431999a0-badf-4491-b889-9551f8cdcd9e" />
+
 Throughout development, I focused on balancing visual elegance with functional scalability, ensuring the platform could grow alongside the choir’s activities. After launch, I continued to support the client through iterative updates, improving usability and expanding features based on real feedback. This sustained collaboration ensured that the platform remained reliable and adaptive to the choir’s evolving needs.
 
 ### 🎼 Outcomes

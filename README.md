@@ -1,46 +1,31 @@
-# Getting Started with Create React App
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/3d1863b8-3cb3-44ea-8bac-676dbaed9def" />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Canticum Choir
 
-## Available Scripts
+Freelance Web Development Project (2023-01 ~ 2024-07)
 
-In the project directory, you can run:
+- Category: Web & Mobile
+- Roles: UI/UX Designer, Developer
+- Tools: TypeScript, JavaScript, React, Node.js, MySQL
 
-### `npm start`
+## From Artistic harmony to Digital harmony
+— transforming choir identity into a full-featured, client-centered web experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Motivation
+Canticum Choir requested a webpage that reflected both its artistic spirit and practical needs. The challenge was to design a platform that resonated with the choir’s aesthetic values while allowing non-technical members to independently manage content such as concert updates and newsletters through the admin menu.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Approach
+As a freelance full-stack developer and UI/UX designer, I led the project end-to-end, from initial client consultation to deployment and long-term maintenance. I crafted a responsive UI/UX inspired by the choir’s visual identity and implemented an admin dashboard connected to a SQL database. This system allowed real-time content updates, encompassing both the public-facing site and a secure admin interface.
+<img width="6400" height="2400" alt="image" src="https://github.com/user-attachments/assets/431999a0-badf-4491-b889-9551f8cdcd9e" />
+Throughout development, I focused on balancing visual elegance with functional scalability, ensuring the platform could grow alongside the choir’s activities. After launch, I continued to support the client through iterative updates, improving usability and expanding features based on real feedback. This sustained collaboration ensured that the platform remained reliable and adaptive to the choir’s evolving needs.
 
-### `npm test`
+### Outcomes
+- Delivered and maintained a fully functional website for long-term client use, reducing monthly operational costs by 80%.
+- Implemented SQL-based content management system, enabling independent content uploads and edits.
+- Designed a responsive, minimalist interface aligning with the choir’s artistic tone and accessibility needs.
+- Iteratively refined performance and content workflows through user feedback and data-driven improvements.
+- Demonstrated commitment to long-term quality and client satisfaction, sustaining a successful working relationship.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Reflection
+This project strengthened my ability to deliver end-to-end web solutions tailored to client needs, highlighting my skills in both user-centered design and full-stack development. The extended maintenance period reinforced my ability to manage projects beyond delivery — ensuring scalability, client trust, and technical stability over time.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
